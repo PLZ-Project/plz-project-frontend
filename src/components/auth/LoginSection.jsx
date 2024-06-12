@@ -6,13 +6,8 @@ import DiscordLogo from '../../assets/discord.svg?react';
 import Button from '../common/Button';
 
 function LoginSection() {
-  const navigate = useNavigate();
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
-
-  const handleSignupButtonClick = () => {
-    navigate('/signup');
-  };
 
   return (
     <div className="flex h-[32.5rem] flex-col items-center rounded-2xl border-2 border-black bg-white p-8">
@@ -63,12 +58,6 @@ function LoginSection() {
           </button>
           <button aria-label="디스코드 로그인">
             <DiscordLogo />
-          </button>
-        </div>
-        <div className="mt-4 flex items-center justify-center">
-          <p className="mr-2">아직 회원이 아니시라면?</p>
-          <button onClick={handleSignupButtonClick} className="font-semibold text-mainBlue">
-            회원가입
           </button>
         </div>
       </div>

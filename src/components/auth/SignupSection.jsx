@@ -11,12 +11,6 @@ function SignupSection() {
     'passwordCheck'
   );
 
-  const navigate = useNavigate();
-
-  const handleSigninButtonClick = () => {
-    navigate('/login');
-  };
-
   return (
     <div className="flex h-[32.5rem] flex-col items-center rounded-2xl border-2 border-black bg-white p-8">
       <h1 className="mb-10 text-4xl font-bold">회원가입</h1>
@@ -67,12 +61,6 @@ function SignupSection() {
             회원가입
           </Button>
         </form>
-        <div className="mt-4 flex items-center justify-center">
-          <p className="mr-2">회원이시라면?</p>
-          <button onClick={handleSigninButtonClick} className="font-semibold text-mainBlue">
-            로그인
-          </button>
-        </div>
       </div>
     </div>
   );
