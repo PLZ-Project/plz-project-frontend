@@ -1,15 +1,50 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import useInputValidator from '../../hooks/useInputValidator';
 import DynamicInput from '../common/DynamicInput';
 import Button from '../common/Button';
+import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function SignupSection() {
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
   const [passwordCheck, isPasswordCheckValid, handlePasswordCheckChange] = useInputValidator(
     '',
-    'passwordCheck'
+    'passwordCheck',
+    password
   );
+  const [isValid, setIsValid] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsValid(isEmailValid && isPasswordValid && isPasswordCheckValid);
+  }, [isEmailValid, isPasswordValid, isPasswordCheckValid]);
+
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValid) {
+      return;
+    }
+
+    // 회원가입 API 호출
+    try {
+      await apiInstanceWithoutToken.post(
+        '/user',
+        {
+          email,
+          password
+        },
+        {
+          withCredentials: true
+        }
+      );
+      // navigate('/');
+      console.log('회원가입 성공??');
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+    }
+  };
 
   return (
     <div className="flex h-[32.5rem] flex-col items-center rounded-2xl border-2 border-black bg-white p-8">
@@ -57,7 +92,13 @@ function SignupSection() {
           ) : (
             <div className="text-xs text-mainBlue">비밀번호가 일치합니다.</div>
           )}
-          <Button width={17.25} height={3.125} type="filled">
+          <Button
+            width={17.25}
+            height={3.125}
+            type="filled"
+            isValid={!isValid}
+            onClick={handleSignupSubmit}
+          >
             회원가입
           </Button>
         </form>
