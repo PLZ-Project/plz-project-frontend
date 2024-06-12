@@ -49,6 +49,7 @@ const settingArgs = {
     ],
     'no-shadow': 0,
     'import/no-unresolved': 0,
+    'no-useless-return': 0,
     'react/prop-types': 0,
     'react/jsx-no-bind': 0,
     'prettier/prettier': 0,
