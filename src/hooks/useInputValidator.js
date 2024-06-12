@@ -17,7 +17,7 @@ const validateRules = [
   }
 ];
 
-function useInputValidator(initialValue, type) {
+function useInputValidator(initialValue, type, conFirmValue) {
   const [value, setValue] = useState(initialValue);
   const [isValid, setIsValid] = useState(false);
 
@@ -32,8 +32,8 @@ function useInputValidator(initialValue, type) {
         if (rule.regex) {
           const isValid = rule.regex.test(value);
           setIsValid(isValid);
-        } else {
-          setIsValid(value === initialValue);
+        } else if (rule.type === 'passwordCheck') {
+          setIsValid(value === conFirmValue);
         }
       }
     });
