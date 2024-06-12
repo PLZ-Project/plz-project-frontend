@@ -29,16 +29,10 @@ function SignupSection() {
 
     // 회원가입 API 호출
     try {
-      await apiInstanceWithoutToken.post(
-        '/user',
-        {
-          email,
-          password
-        },
-        {
-          withCredentials: true
-        }
-      );
+      await apiInstanceWithoutToken.post('/user', {
+        email,
+        password
+      });
       // navigate('/');
       console.log('회원가입 성공??');
     } catch (error) {
