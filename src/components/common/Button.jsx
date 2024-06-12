@@ -1,4 +1,4 @@
-function Button({ width, height, children, type, onClick }) {
+function Button({ width, height, children, type, onClick, isValid }) {
   // 공용 버튼을 만든다.
   // 버튼 컴포넌트는 props를 통해 크기와 안에 들어갈 내용을 받을수 있다.
   // 또한, 버튼의 종류는 안이 채워진 버튼과 테두리만 있는 버튼으로 나눌 수 있다.
@@ -12,6 +12,7 @@ function Button({ width, height, children, type, onClick }) {
       className={`w-[${width}rem] h-[${height}rem] ${
         type === 'filled' ? 'bg-mainBlue text-white' : 'border border-mainBlue text-mainBlue'
       } rounded-lg`}
+      disabled={isValid}
     >
       {children}
     </button>
