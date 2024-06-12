@@ -10,5 +10,10 @@ export default defineConfig({
     postcss: {
       plugins: [tailwindcss]
     }
+  },
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
   }
 });
