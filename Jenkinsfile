@@ -6,7 +6,6 @@ pipeline {
     environment {
         SLACK_SUCCESS_CHANNEL = '#SUCCESS'
         SLACK_FAIL_CHANNEL = '#FAIL'
-        SLACK_ABORTED_CHANNEL = '#ABORTED'
         AWS_REGION = 'ap-northeast-2'
         COMMIT_MESSAGE = '⚡[Modify] 코드 수정'
         BLUE_GREEN_STATE_FILE = 'blue_green_state.txt'
@@ -204,7 +203,7 @@ pipeline {
                         "docker run -d --name frontend-${renewEnv} -p ${activePort}:80 whitewalls/frontend:latest" :
                         "docker run -d --name frontend-${renewEnv} -p ${activePort}:80 whitewalls/frontend-dev:latest"
 
-                    def switchCommand = stopCurrentCommand + " && " + startNextCommand
+                    def switchCommand = startNextCommand + " && " + stopCurrentCommand
 
                     def commandId = sh(script: """
                     aws ssm send-command --document-name "AWS-RunShellScript" \\
@@ -347,7 +346,7 @@ def waitForSSMCommandCompletion(commandId) {
             error "Command ${commandId} failed with status: ${status}"
         } else {
             echo "Command ${commandId} is still in progress with status: ${status}. Waiting..."
-            sleep(time: 10, unit: "SECONDS")
+            sleep(time: 5, unit: "SECONDS")
         }
     }
 }
