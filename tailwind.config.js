@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'default-img': "url('/src/assets/Dva.jpg')"
+        'default-img': "url('/src/assets/dva.png')",
+        'auth-img': "url('/src/assets/dva.jpg')"
       },
       colors: {
         mainBlue: '#324FE5',

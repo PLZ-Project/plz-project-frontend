@@ -13,14 +13,7 @@ function Router() {
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/post" element={<PostArticlePage />} />
       <Route path="/post/:id" element={<PostModifyPage />} />
-      <Route
-        path="/userinfo"
-        element={
-          <AuthRoute>
-            <UserinfoPage />
-          </AuthRoute>
-        }
-      />
+      <Route path="/userinfo" element={<UserinfoPage />} />
     </Routes>
   );
 }

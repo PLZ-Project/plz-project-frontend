@@ -3,7 +3,7 @@ function Banner() {
   // 크기는 1440*200이다.
   return (
     <div className="fixed z-10 flex w-full items-center justify-center">
-      <img src="/src/assets/banner.jpg" alt="banner" className="h-96 w-full object-cover" />
+      <img src="/src/assets/dva.png" alt="banner" className="h-[35rem] w-full object-cover" />
     </div>
   );
 }
