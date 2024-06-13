@@ -1,9 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import NoImage from '../../assets/noImage.svg?react';
 
 function HorizontalPost({ id, board, likes, title, views, date, writer }) {
   // const { id, board, likes, title, views, date, writer } = posts;
+  const navigate = useNavigate();
+  const clickPost = () => {
+    navigate(`/post/${id}`);
+  };
   return (
-    <div className="flex h-[4.5rem] w-[52rem] flex-row gap-4 border border-b-bgGray bg-white px-4 hover:bg-mainBlue-500">
+    <div
+      className="flex h-[4.5rem] w-[52rem] flex-row gap-4 border border-b-bgGray bg-white px-4 hover:bg-mainBlue-500"
+      onClick={clickPost}
+    >
       <div className="flex  w-7 items-center justify-center">
         <p>{likes}</p>
       </div>
