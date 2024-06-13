@@ -1,20 +1,7 @@
-import { useAtom } from 'jotai';
 import { FaCircle, FaFire, FaSearch } from 'react-icons/fa';
-import { MdViewStream, MdViewModule } from 'react-icons/md';
-import layoutAtom from '../../atoms/layoutAtom';
 import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function SearchBar() {
-  const [layout, setLayout] = useAtom(layoutAtom);
-
-  const changeHorizontalView = () => {
-    setLayout({ layout: 'horizontal' });
-  };
-
-  const changeVerticalView = () => {
-    setLayout({ layout: 'vertical' });
-  };
-
   // const handleSearchClick = async () => {
   //   // 검색어 필터를 위한 제목, 제목 + 내용, 작성자 select 값과 검색어를 가져와서 검색 결과를 보여준다.
   //   // elastic search를 사용하여 검색 결과를 가져온다.
@@ -44,20 +31,6 @@ function SearchBar() {
         </button>
       </div>
       <div className="mr-4 flex flex-row gap-4">
-        <button
-          aria-label="horizontal view"
-          className="flex w-8 items-center justify-center"
-          onClick={changeHorizontalView}
-        >
-          <MdViewStream />
-        </button>
-        <button
-          aria-label="vertical view"
-          className="flex w-8 items-center justify-center"
-          onClick={changeVerticalView}
-        >
-          <MdViewModule />
-        </button>
         {/* 이 div에는 검색어 필터를 위한 제목, 제목 + 내용, 작성자 select 가 들어가야하고, 검색어 입력창과 검색 버튼이 필요하다. */}
         <select defaultValue={1} className="h-12 focus:outline-none">
           <option value={1}>제목</option>
