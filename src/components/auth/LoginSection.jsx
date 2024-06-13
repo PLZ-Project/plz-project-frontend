@@ -4,11 +4,35 @@ import DynamicInput from '../common/DynamicInput';
 import GoogleLogo from '../../assets/google.svg?react';
 import DiscordLogo from '../../assets/discord.svg?react';
 import Button from '../common/Button';
+import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function LoginSection() {
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
 
+  // const navigate = useNavigate();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await apiInstanceWithoutToken
+        .post('/auth/login', {
+          email,
+          password
+        })
+        .then((res) => {
+          const accessToken = document.cookie.replace(
+            /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
+            '$1'
+          );
+
+          localStorage.setItem('accessToken', accessToken);
+        });
+      // navigate('/');
+      console.log('로그인 성공?');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="flex h-[32.5rem] flex-col items-center rounded-2xl border-2 border-black bg-white p-8">
       <h1 className="mb-10 text-4xl font-bold">로그인</h1>
@@ -40,7 +64,7 @@ function LoginSection() {
           ) : (
             <div className="ml-2 text-xs text-mainBlue">비밀번호가 일치합니다.</div>
           )}
-          <Button width={17.75} height={3.125} type="filled">
+          <Button width={17.75} height={3.125} type="filled" onClick={handleLogin}>
             로그인
           </Button>
         </form>
