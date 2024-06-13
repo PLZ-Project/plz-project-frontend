@@ -4,31 +4,25 @@ import DynamicInput from '../common/DynamicInput';
 import GoogleLogo from '../../assets/google.svg?react';
 import DiscordLogo from '../../assets/discord.svg?react';
 import Button from '../common/Button';
-import { apiInstanceWithoutToken } from '../../api/apiInstance';
+import axios from 'axios';
+
+import { isLoginAtom } from '../../atoms/isLoginAtom';
+import { useSetAtom } from 'jotai';
 
 function LoginSection() {
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
-
   // const navigate = useNavigate();
+  const setIsLogin = useSetAtom(isLoginAtom);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await apiInstanceWithoutToken
-        .post('/auth/login', {
-          email,
-          password
-        })
-        .then((res) => {
-          const accessToken = document.cookie.replace(
-            /(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/,
-            '$1'
-          );
-
-          localStorage.setItem('accessToken', accessToken);
-        });
+      await axios.post('/api/auth/login', {
+        email,
+        password
+      });
+      setIsLogin(true);
       // navigate('/');
-      console.log('로그인 성공?');
     } catch (error) {
       console.error(error);
     }
