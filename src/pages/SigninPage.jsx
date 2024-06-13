@@ -67,7 +67,7 @@ function SigninPage() {
           </form>
           <div className="mt-4 flex flex-row justify-center gap-6">
             <button aria-label="구글 로그인">
-              <GoogleLogo w-88 h-88 />
+              <GoogleLogo />
             </button>
             <button aria-label="디스코드 로그인">
               <DiscordLogo />
