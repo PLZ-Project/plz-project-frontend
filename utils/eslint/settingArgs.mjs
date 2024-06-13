@@ -65,7 +65,8 @@ const settingArgs = {
     'import/prefer-default-export': 0,
     'react/jsx-one-expression-per-line': 0,
     'import/no-named-as-default-member': 0,
-    'tailwindcss/no-contradicting-classname': 0
+    'tailwindcss/no-contradicting-classname': 0,
+    'tailwindcss/migration-from-tailwind-2': 0
   }
 };
 
