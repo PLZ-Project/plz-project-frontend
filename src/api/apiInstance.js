@@ -3,10 +3,10 @@ import { Cookies } from 'react-cookie';
 
 export const apiInstanceWithoutToken = axios.create(
   {
-    baseURL: 'http://ec2-3-34-2-18.ap-northeast-2.compute.amazonaws.com/api'
+    baseURL: 'https://www.plz-project.site/api',
+    withCredentials: true
   },
   {
-    withCredentials: false,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -14,7 +14,7 @@ export const apiInstanceWithoutToken = axios.create(
 );
 
 export const apiInstance = axios.create({
-  baseURL: 'http://ec2-3-34-2-18.ap-northeast-2.compute.amazonaws.com/api'
+  baseURL: 'https://plz-project.site/api'
 });
 
 // interceptor

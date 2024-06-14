@@ -9,30 +9,20 @@ function DynamicInput({ type, value, onChange, placeholder }) {
     setIsFocus(false);
   };
   return (
-    <div className="relative h-[3.125rem] w-[17.75rem]">
+    <div className="h-14 w-[20.625rem]">
       <input
         type={type}
-        placeholder=" "
         value={value}
         onChange={onChange}
-        className={`p2-reg peer w-full rounded-md border bg-white  px-4 py-3 placeholder:text-gray-400 disabled:border-mainBlue-300 disabled:text-gray-300 ${
+        className={`p2-reg peer h-12 w-full rounded-md border bg-[#d5d5d5] bg-opacity-60  px-4 py-3 text-[20px] placeholder:text-[#303030]  disabled:text-gray-300 ${
           isFocused ? 'border-mainBlue' : ''
         }`}
         required
         autoComplete="off"
+        placeholder={placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      <label
-        htmlFor={type}
-        className={`peer-placeholder-shown:p2-reg 
-        peer-focus:caption-reg caption-reg 
-         peer-focus:text-mainborder-mainBlue pointer-events-none absolute -top-3 left-4 z-[1] bg-white px-1 py-0.5 transition-all duration-200 ease-in-out peer-placeholder-shown:top-2.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:bg-white peer-focus:py-0.5 ${
-           isFocused ? 'text-mainborder-mainBlue' : 'text-gray-400'
-         }`}
-      >
-        {placeholder}
-      </label>
     </div>
   );
 }
