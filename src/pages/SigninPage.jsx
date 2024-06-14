@@ -18,12 +18,23 @@ function SigninPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await apiInstanceWithoutToken.post('/auth/login', {
+      const response = await apiInstanceWithoutToken.post('/auth/login', {
         email,
         password
       });
+
+      const cookies = response.headers['Set-Cookie'];
+      console.log(cookies);
+      // .then((response) => {
+      //   const { accessToken, refreshToken, userInfo } = response.data;
+      //   localStorage.setItem('accessToken', accessToken);
+      //   localStorage.setItem('refreshToken', refreshToken);
+      //   localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      //   setIsLogin(true);
+      //   navigate('/');
+      // });
       setIsLogin(true);
-      // navigate('/');
+      navigate('/');
     } catch (error) {
       console.error(error);
     }
