@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'default-img': "url('/src/assets/Dva.jpg')"
+        'default-img': "url('/src/assets/Dva.jpg')",
+        'auth-img': "url('/src/assets/auth.png')"
       },
       colors: {
         mainBlue: '#324FE5',
@@ -19,7 +20,8 @@ export default {
         'mainBlue-900': 'rgba(50, 79, 229, 0.9)',
         warnRed: '#FF1E1E',
         placeholderGray: '#BABABA',
-        bgGray: '#E7E7E7'
+        bgGray: '#E7E7E7',
+        yel: '#FFB800'
       }
     }
   },
