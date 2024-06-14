@@ -5,6 +5,7 @@ import useInputValidator from '../hooks/useInputValidator';
 import DynamicInput from '../components/common/DynamicInput';
 import Button from '../components/common/Button';
 import AuthLogo from '../../src/assets/authlogo.svg?react';
+import { apiInstanceWithoutToken } from '../api/apiInstance';
 
 function SignupPage() {
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
@@ -34,7 +35,7 @@ function SignupPage() {
 
     // 회원가입 API 호출
     try {
-      await axios.post('/api/user', {
+      await apiInstanceWithoutToken.post('/user', {
         email,
         password
       });
@@ -44,15 +45,20 @@ function SignupPage() {
       console.error('회원가입 실패:', error);
     }
   };
+
+  const handleGoMain = () => {
+    navigate('/');
+  };
+
   return (
-    <div className="bg-auth-img relative flex h-screen items-center justify-center object-cover">
-      <div className="absolute left-0 top-0 m-6">
+    <div className="relative flex h-screen items-center justify-center bg-auth-img object-cover">
+      <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo />
       </div>
       <div className="flex w-[29rem] flex-col items-center">
         <h1 className="font-semiboldbold mb-10 text-4xl text-white text-opacity-85">회원가입</h1>
         <div>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-2">
             <DynamicInput
               label="이메일"
               value={email}
@@ -62,7 +68,7 @@ function SignupPage() {
               onChange={handleEmailChange}
             />
             {email && !isEmailValid && (
-              <div className="text-yel text-xs">이메일 형식이 올바르지 않습니다.</div>
+              <div className="text-xs text-yel">이메일 형식이 올바르지 않습니다.</div>
             )}
             <DynamicInput
               label="비밀번호"
@@ -73,7 +79,7 @@ function SignupPage() {
               onChange={handlePasswordChange}
             />
             {password && !isPasswordValid && (
-              <div className="text-yel text-xs">
+              <div className="text-xs text-yel">
                 숫자, 문자, 특수문자를 포함한 8자 이상이어야 합니다.
               </div>
             )}
@@ -86,18 +92,18 @@ function SignupPage() {
               onChange={handlePasswordCheckChange}
             />
             {passwordCheck && !isPasswordCheckValid && (
-              <div className="text-yel text-xs">비밀번호가 일치하지 않습니다.</div>
+              <div className="text-xs text-yel">비밀번호가 일치하지 않습니다.</div>
             )}
             <button
               onClick={handleSignupSubmit}
-              className="text-white' h-14 w-[20.625rem] rounded-lg bg-mainBlue text-white"
+              className="text-white' h-12 w-[20.625rem] rounded-lg bg-mainBlue text-white"
             >
               회원가입
             </button>
           </form>
           <div className="mt-4 flex items-center justify-center">
             <p className="mr-2 text-white">아직 회원이 아니시라면?</p>
-            <button onClick={handleSigninButtonClick} className="text-yel font-semibold">
+            <button onClick={handleSigninButtonClick} className="font-semibold text-yel">
               로그인
             </button>
           </div>

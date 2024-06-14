@@ -14,7 +14,7 @@ function DynamicInput({ type, value, onChange, placeholder }) {
         type={type}
         value={value}
         onChange={onChange}
-        className={`p2-reg peer h-14 w-full rounded-md border bg-[#d5d5d5] bg-opacity-60  px-4 py-3 text-[20px] placeholder:text-[#303030]  disabled:text-gray-300 ${
+        className={`p2-reg peer h-12 w-full rounded-md border bg-[#d5d5d5] bg-opacity-60  px-4 py-3 text-[20px] placeholder:text-[#303030]  disabled:text-gray-300 ${
           isFocused ? 'border-mainBlue' : ''
         }`}
         required
