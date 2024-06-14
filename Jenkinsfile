@@ -222,7 +222,7 @@ pipeline {
     post {
         success {
             script {
-                def message = "⭐😋${env.BRANCH_NAME}브랜치에서 ${env.BUILD_NUMBER}번째 백엔드 빌드가 성공하였습니다!! PR을 승인해주세요!!😋⭐"
+                def message = "⭐😋${env.BRANCH_NAME}브랜치에서 ${env.BUILD_NUMBER}번째 프론트엔드 빌드가 성공하였습니다!! PR을 승인해주세요!!😋⭐"
                 slackSend(channel: env.SLACK_SUCCESS_CHANNEL, tokenCredentialId: 'slack-credentials', message: message)
             }
         }
@@ -321,7 +321,7 @@ pipeline {
                         }
                     }
 
-                    def message = "☔🙀${env.BRANCH_NAME}브랜치에서 ${env.BUILD_NUMBER}번째 백엔드 빌드가 실패하였습니다!! 로그를 확인해주세요!!🙀☔"
+                    def message = "☔🙀${env.BRANCH_NAME}브랜치에서 ${env.BUILD_NUMBER}번째 프론트엔드 빌드가 실패하였습니다!! 로그를 확인해주세요!!🙀☔"
 
                     slackSend(channel: env.SLACK_FAIL_CHANNEL, tokenCredentialId: 'slack-credentials', message: message)
                 }
