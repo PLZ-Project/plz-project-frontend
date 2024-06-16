@@ -1,17 +1,25 @@
 import Logo from '@assets/logo.svg?react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { useState } from 'react';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
+import AlertDropdown from '../modal/AlertDropdown';
+import axios from 'axios';
 
 function Header() {
   // 헤더의 위치는 상단에 고정되어 있어야 한다.
   // 헤더의 내부는 flex 로 정렬되면, 좌측에는 로고가 들어간다.
   // 우측에는 로그인 상태에 따라, 로그인 버튼 또는 로그아웃 버튼이 들어간다.
   // 로그인 시, 알림 버튼이 추가로 들어간다.
-  const [cookie] = useCookies(['accessToken', 'refreshToken']);
-  console.log(cookie);
+
   const navigate = useNavigate();
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const toggleDropdownClick = (e) => {
+    console.log('toggleDropdownClick', isDropdownVisible);
+    e.stopPropagation(); // 이벤트 전파 중지
+    setIsDropdownVisible((prev) => !prev);
+  };
 
   const [isLogin, setIsLogin] = useAtom(isLoginAtom);
 
@@ -24,12 +32,21 @@ function Header() {
   };
 
   const handleLogout = async () => {
-    // try {
-    //   (await apiInstance.get('/auth/logout')).config.headers.Authorization = `${cookie}`;
-    //   setIsLogin(false);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      await axios.get('/api/auth/logout', {
+        headers: {
+          access_token: localStorage.getItem('accessToken'),
+          refresh_token: localStorage.getItem('refreshToken')
+        }
+      });
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userInfo');
+      goToMain();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+
     setIsLogin(false);
   };
 
@@ -43,7 +60,9 @@ function Header() {
         {/* 로그인 되어있을 때 */}
         {isLogin ? (
           <>
-            <button>알림</button>
+            <button onClick={toggleDropdownClick} aria-label="alert button">
+              알림
+            </button>
             <button onClick={handleLogout} aria-label="logout button">
               로그아웃
             </button>
@@ -54,6 +73,7 @@ function Header() {
           </button>
         )}
       </div>
+      {isDropdownVisible && <AlertDropdown toggleDropdown={toggleDropdownClick} />}
     </header>
   );
 }
