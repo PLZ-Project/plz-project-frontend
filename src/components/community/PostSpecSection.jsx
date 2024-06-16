@@ -25,6 +25,10 @@ function PostSpecSection({ id }) {
         console.error(error);
       }
     };
+
+    return () => {
+      setPostInfo({});
+    };
   }, [id]);
 
   return (
