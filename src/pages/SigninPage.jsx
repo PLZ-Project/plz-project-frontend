@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
-import axios from 'axios';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
 import { isLoginAtom } from '../atoms/isLoginAtom';
@@ -18,21 +17,19 @@ function SigninPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiInstanceWithoutToken.post('/auth/login', {
-        email,
-        password
-      });
-
-      const cookies = response.headers['Set-Cookie'];
-      console.log(cookies);
-      // .then((response) => {
-      //   const { accessToken, refreshToken, userInfo } = response.data;
-      //   localStorage.setItem('accessToken', accessToken);
-      //   localStorage.setItem('refreshToken', refreshToken);
-      //   localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      //   setIsLogin(true);
-      //   navigate('/');
-      // });
+      await apiInstanceWithoutToken
+        .post('/auth/login', {
+          email,
+          password
+        })
+        .then((response) => {
+          const { accessToken, refreshToken, userInfo } = response.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+          setIsLogin(true);
+          navigate('/');
+        });
       setIsLogin(true);
       navigate('/');
     } catch (error) {
