@@ -88,13 +88,11 @@ function PostArticleForm({ isEditing, postData }) {
   const handleSubmit = async () => {
     if (quill) {
       const content = quill.root.innerHTML;
-      const formData = new FormData();
+      const formData = new URLSearchParams();
       formData.append('content', content);
       formData.append('title', title);
-      formData.append('boardType', selectedBoard);
-      for (const x of formData.entries()) {
-        console.log(x);
-      }
+      formData.append('boardId', selectedBoard);
+
       try {
         if (isEditMode) {
           await apiInstance.put(`/posts/${postData.id}`, formData);
@@ -102,6 +100,7 @@ function PostArticleForm({ isEditing, postData }) {
           // 서버로 formData를 보내는 로직 추가
           await axios.post('/api/article', formData, {
             headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
               access_token: localStorage.getItem('accessToken'),
               refresh_token: localStorage.getItem('refreshToken')
             }
