@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 
 import { apiInstance } from '../../api/apiInstance';
 import ChangePW from '../modal/ChangePW';
+import axios from 'axios';
 
-function MyInfo() {
-  const email = localStorage.getItem('email');
+function MyInfo({ userInfo }) {
+  const email = userInfo.email;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [nickname, setNickname] = useState(localStorage.getItem('nickname'));
+  const [nickname, setNickname] = useState(userInfo.nickname);
   const [isEditNickname, setIsEditNickname] = useState(false);
   // const [isEditPassword, setIsEditPassword] = useState(false);
   const [newNickname, setNewNickname] = useState(nickname);
@@ -15,7 +16,7 @@ function MyInfo() {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
+  // 닉네임 중복 검사 api 없음.
   useEffect(() => {
     const checkDuplicateNickname = async () => {
       try {
@@ -41,16 +42,26 @@ function MyInfo() {
     setIsModalOpen(!isModalOpen);
   };
 
+  // 닉네임 취소 버튼을 누르면, 닉네임을 변경하기 전으로 돌아가야 한다. 현재 이 부분에서 에러 발생.
   const handleCancelEditNickname = () => {
     setIsEditNickname(false);
-    setNewNickname(nickname);
+    setNewNickname(userInfo.nickname);
   };
 
   const handleSaveNickname = async () => {
     try {
-      const response = await apiInstance.post('/update-nickname', {
-        nickname: newNickname
-      });
+      const response = await axios.post(
+        '/api/user/updateNickname',
+        {
+          nickname: newNickname
+        },
+        {
+          headers: {
+            access_token: localStorage.getItem('accessToken'),
+            refresh_token: localStorage.getItem('refreshToken')
+          }
+        }
+      );
       const data = await response.json();
       if (data.success) {
         setNickname(newNickname);
