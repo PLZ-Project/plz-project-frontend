@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import PostArticlePage from './pages/PostArticlePage';
 import PostModifyPage from './pages/PostModifyPage';
-import AuthRoute from './router/customRoutes';
+import { AuthRoute, NonAuthRoute } from './router/customRoutes';
 import UserinfoPage from './pages/UserinfoPage';
 import PostSpecPage from './pages/PostSpecPage';
 import SigninPage from './pages/SigninPage';
@@ -12,13 +12,47 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
-      <Route path="/login" element={<SigninPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/post" element={<PostArticlePage />} />
-      <Route path="/post/:id" element={<PostModifyPage />} />
-      <Route path="/userinfo" element={<UserinfoPage />} />
+      <Route
+        path="/login"
+        element={
+          <NonAuthRoute>
+            <SigninPage />
+          </NonAuthRoute>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <NonAuthRoute>
+            <SignupPage />
+          </NonAuthRoute>
+        }
+      />
+      <Route
+        path="/post"
+        element={
+          <AuthRoute>
+            <PostArticlePage />
+          </AuthRoute>
+        }
+      />
+      <Route
+        path="/post/:id"
+        element={
+          <AuthRoute>
+            <PostModifyPage />
+          </AuthRoute>
+        }
+      />
+      <Route
+        path="/userinfo"
+        element={
+          <AuthRoute>
+            <UserinfoPage />
+          </AuthRoute>
+        }
+      />
       <Route path="/post/:id" element={<PostSpecPage />} />
-      <Route path="/post/modify/:id" element={<PostModifyPage />} />
     </Routes>
   );
 }
