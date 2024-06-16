@@ -45,7 +45,6 @@ function SigninPage() {
   };
   return (
     <div className="relative flex h-screen items-center justify-center bg-auth-img object-cover">
-      {/* {isLoading && <Spinner />} */}
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo />
       </div>
