@@ -2,6 +2,7 @@ import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
 
@@ -10,12 +11,11 @@ function PostArticleForm({ isEditing, postData }) {
   const [isEditMode, setIsEditMode] = useState(isEditing);
   const [title, setTitle] = useState(postData?.title || '');
   const [content, setContent] = useState(postData?.content || '');
-  const [selectedBoard, setSelectedBoard] = useState('자유게시판');
+  const [selectedBoard, setSelectedBoard] = useState(1);
 
   const handleBoardChange = (e) => {
     setSelectedBoard(e.target.value);
   };
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -34,7 +34,7 @@ function PostArticleForm({ isEditing, postData }) {
     if (isEditMode && quill) {
       quill.setContents(JSON.parse(postData.content));
       setTitle(postData.title);
-      setSelectedBoard(postData.boardType);
+      setSelectedBoard(postData.boardId);
     }
   }, [isEditMode, quill, postData]);
 
@@ -45,10 +45,26 @@ function PostArticleForm({ isEditing, postData }) {
 
   const saveToServer = async (file) => {
     const body = new FormData();
-    body.append('file', file);
+    body.append('images', file);
     console.log(body, file);
-    const response = await apiInstance.post('/images', body);
-    insertToEditor(response.uploadedImageUrl);
+    try {
+      await axios
+        .post('/api/article/imageUpload', body, {
+          headers: {
+            access_token: localStorage.getItem('accessToken'),
+            refresh_token: localStorage.getItem('refreshToken')
+          }
+        })
+        .then((response) => {
+          const images = response.data;
+          images.forEach((image) => {
+            insertToEditor(image.path);
+          });
+        });
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      // 에러 처리 로직 추가
+    }
   };
 
   const selectLocalImage = () => {
@@ -76,13 +92,21 @@ function PostArticleForm({ isEditing, postData }) {
       formData.append('content', content);
       formData.append('title', title);
       formData.append('boardType', selectedBoard);
-
+      for (const x of formData.entries()) {
+        console.log(x);
+      }
       try {
         if (isEditMode) {
           await apiInstance.put(`/posts/${postData.id}`, formData);
         } else {
           // 서버로 formData를 보내는 로직 추가
-          await apiInstance.post('/posts', formData);
+          await axios.post('/api/article', formData, {
+            headers: {
+              access_token: localStorage.getItem('accessToken'),
+              refresh_token: localStorage.getItem('refreshToken')
+            }
+          });
+          console.log('Post uploaded successfully');
           navigate('/');
         }
       } catch (error) {
@@ -105,9 +129,9 @@ function PostArticleForm({ isEditing, postData }) {
         />
         <div className="flex items-center">
           <select value={selectedBoard} onChange={handleBoardChange}>
-            <option>자유게시판</option>
-            <option>질문게시판</option>
-            <option>정보게시판</option>
+            <option value={1}>자유게시판</option>
+            <option value={2}>질문게시판</option>
+            <option value={3}>정보게시판</option>
           </select>
         </div>
       </div>

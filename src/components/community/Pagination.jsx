@@ -4,19 +4,16 @@
 // 페이지 개수 계산 공식 : Math.ceil(전체 포스트 개수 / 한 페이지 최대 포스트 개수)
 // 페이지네이션은 1부터 시작한다.
 // 페이지네이션을 클릭하면 해당 페이지의 포스트를 보여준다.
-import { useAtom } from 'jotai';
 import { useState } from 'react';
-import layoutAtom from '../../atoms/layoutAtom';
 import HorizontalView from './HorizontalView';
 import { dummyData } from '../../mock/dummy';
-import VerticalView from './VerticalView';
 import SearchBar from './SearchBar';
 
 function Pagination() {
   // layoutAtom의 값에 따라 가로형 레이아웃과 세로형 레이아웃을 선택한다.
   // 다만 현재 컴포넌트에선 layoutAtom의 상태만 필요하고, setLayout은 필요하지 않다.
   // layout이 true면 가로형 레이아웃, false면 세로형 레이아웃이다.
-  const [{ layout }] = useAtom(layoutAtom);
+  // const [{ layout }] = useAtom(layoutAtom);
   const postCount = dummyData.length;
   const postPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,11 +42,7 @@ function Pagination() {
       <SearchBar />
       {/* 조건부 렌더링 */}
       <div className="h-[40.5rem]">
-        {layout === 'horizontal' ? (
-          <HorizontalView posts={currentPosts} />
-        ) : (
-          <VerticalView posts={currentPosts} />
-        )}
+        <HorizontalView posts={currentPosts} />
       </div>
       {/* 페이지네이션 */}
       <div className="mt-4 flex items-center justify-center space-x-2">

@@ -1,14 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
 import Button from '../common/Button';
 import BoardList from './BoardList';
 import Profile from './Profile';
+import { isLoginAtom } from '../../atoms/isLoginAtom';
 
 function SideMenu() {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false);
+  const isLogin = useAtom(isLoginAtom)[0];
   const handleLoginButtonClick = () => {
-    navigate('/auth');
+    navigate('/login');
   };
   const handlePostButtonClick = () => {
     navigate('/post');
@@ -18,7 +19,7 @@ function SideMenu() {
     <div className="flex flex-col">
       <Profile />
       <div className="flex h-[5.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray bg-white">
-        {isLogin ? (
+        {isLogin === true ? (
           <Button
             width={19.5}
             height={4.5}
@@ -40,7 +41,6 @@ function SideMenu() {
           </Button>
         )}
       </div>
-
       <BoardList />
     </div>
   );

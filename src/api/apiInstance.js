@@ -1,22 +1,50 @@
 import axios from 'axios';
-import { Cookies } from 'react-cookie';
 
-export const apiInstanceWithoutToken = axios.create({
-  baseURL: 'http://ec2-3-34-2-18.ap-northeast-2.compute.amazonaws.com/api'
-});
+export const apiInstanceWithoutToken = axios.create(
+  {
+    baseURL: 'https://www.plz-project.site/api'
+  },
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
-export const apiInstance = axios.create({
-  baseURL: 'http://ec2-3-34-2-18.ap-northeast-2.compute.amazonaws.com/api'
-});
+export const apiInstance = axios.create(
+  {
+    baseURL: 'https://plz-project.site/api',
+    withCredentials: false
+  },
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
-// interceptor
+// 로컬스토리지에 저장되어있는 access_token, refresh_token을 가져와서 헤더에 넣어주는 interceptor
 apiInstance.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get('accessToken');
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.access_token = `${accessToken}`;
+      config.headers.refresh_token = `${refreshToken}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
+
+// // interceptor
+// apiInstance.interceptors.request.use(
+//   (config) => {
+//     const accessToken = Cookies.get('accessToken');
+//     if (accessToken) {
+//       config.headers.Authorization = `${accessToken}`;
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
