@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
 import AlertDropdown from '../modal/AlertDropdown';
 import axios from 'axios';
+import InfoDropdown from '../modal/InfoDropdown';
 
 function Header() {
   // 헤더의 위치는 상단에 고정되어 있어야 한다.
@@ -14,11 +15,21 @@ function Header() {
 
   const navigate = useNavigate();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [isInfoDropdownVisible, setIsInfoDropdownVisible] = useState(false);
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const { nickname } = userInfo;
 
   const toggleDropdownClick = (e) => {
     console.log('toggleDropdownClick', isDropdownVisible);
     e.stopPropagation(); // 이벤트 전파 중지
     setIsDropdownVisible((prev) => !prev);
+  };
+
+  const toggleInfoDropdownClick = (e) => {
+    console.log('toggleInfoDropdownClick', isInfoDropdownVisible);
+    e.stopPropagation(); // 이벤트 전파 중지
+    setIsInfoDropdownVisible((prev) => !prev);
   };
 
   const [isLogin, setIsLogin] = useAtom(isLoginAtom);
@@ -31,24 +42,23 @@ function Header() {
     navigate('/login');
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.get('/api/auth/logout', {
-        headers: {
-          access_token: localStorage.getItem('accessToken'),
-          refresh_token: localStorage.getItem('refreshToken')
-        }
-      });
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('userInfo');
-      goToMain();
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-
-    setIsLogin(false);
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.get('/api/auth/logout', {
+  //       headers: {
+  //         access_token: localStorage.getItem('accessToken'),
+  //         refresh_token: localStorage.getItem('refreshToken')
+  //       }
+  //     });
+  //     localStorage.removeItem('accessToken');
+  //     localStorage.removeItem('refreshToken');
+  //     localStorage.removeItem('userInfo');
+  //     // 토클 끄기
+  //     goToMain();
+  //     toggleInfoDropdownClick();
+  //   } catch (error) {
+  //     console.error('Error logging out:', error);
+  //   }
 
   return (
     <header className="sticky z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
@@ -63,8 +73,12 @@ function Header() {
             <button onClick={toggleDropdownClick} aria-label="alert button">
               알림
             </button>
-            <button onClick={handleLogout} aria-label="logout button">
-              로그아웃
+            <button
+              onClick={toggleInfoDropdownClick}
+              aria-label="logout button"
+              className="my-2 rounded-md bg-mainBlue-600 px-2"
+            >
+              {nickname} 님 안녕하세요.
             </button>
           </>
         ) : (
@@ -74,6 +88,7 @@ function Header() {
         )}
       </div>
       {isDropdownVisible && <AlertDropdown toggleDropdown={toggleDropdownClick} />}
+      {isInfoDropdownVisible && <InfoDropdown infoToggle={toggleInfoDropdownClick} />}
     </header>
   );
 }

@@ -15,7 +15,7 @@ function AlertDropdown({ toggleDropdown }) {
         toggleDropdown();
       }
     };
-
+    console.log('click');
     document.addEventListener('click', clickOutside);
     return () => {
       document.removeEventListener('click', clickOutside);
