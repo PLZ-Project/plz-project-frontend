@@ -9,7 +9,7 @@ function HorizontalPost({ id, board, likes, title, views, date, writer }) {
   };
   return (
     <div
-      className="flex h-[4.5rem] w-[52rem] flex-row gap-4 border border-b-bgGray bg-white px-4 hover:bg-mainBlue-500"
+      className="flex h-[4.5rem] w-[60rem] flex-row gap-4 border border-b-bgGray bg-white px-4 hover:bg-mainBlue-500"
       onClick={clickPost}
     >
       <div className="flex  w-7 items-center justify-center">

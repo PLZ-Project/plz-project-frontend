@@ -2,14 +2,24 @@ const Boards = ['정보', '자유', '유머', '일상', '버그', '팁', '질문
 
 function BoardList() {
   return (
-    <div className="h-auto w-[20.5rem]  bg-white py-2">
+    <div className="h-auto w-[20.5rem]">
       {Boards.map((board, idx) => (
-        <div
-          key={idx}
-          className="flex-start ml-2 flex h-8 w-[19.5rem] items-center border-b border-bgGray"
-        >
-          <p className="ml-2 h-6 w-12">{board}</p>
-        </div>
+        idx === 0 ? (
+          <div
+            key={idx}
+            className="flex-start pl-2 flex h-11 w-[20.5rem] border-y items-center"
+          >
+            <p className="ml-2 h-6 w-12 text-white">{board}</p>
+          </div>
+        )
+          : (
+            <div
+              key={idx}
+              className="flex-start pl-2 flex h-11 w-[20.5rem] border-y items-center "
+            >
+              <p className="ml-2 h-6 w-12 text-white">{board}</p>
+            </div>
+          )
       ))}
     </div>
   );
