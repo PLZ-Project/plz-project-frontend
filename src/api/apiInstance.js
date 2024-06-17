@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const apiInstanceWithoutToken = axios.create(
   {
-    baseURL: 'https://www.plz-project.site/api'
+    baseURL: '/api'
   },
   {
     headers: {
@@ -13,7 +13,7 @@ export const apiInstanceWithoutToken = axios.create(
 
 export const apiInstance = axios.create(
   {
-    baseURL: 'https://plz-project.site/api',
+    baseURL: '/api',
     withCredentials: false
   },
   {
@@ -29,13 +29,31 @@ apiInstance.interceptors.request.use(
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     if (accessToken) {
-      config.headers.access_token = `${accessToken}`;
-      config.headers.refresh_token = `${refreshToken}`;
+      config.headers.accesstoken = `${accessToken}`;
+      config.headers.refreshtoken = `${refreshToken}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
+
+// 토큰이 필요한 요청을 보낼 때, 만약 액세스 토큰이나 리프레시 토큰이 만료되었다면, 서버에서 만료된 토큰을 새롭게 발급해서 보내준다.
+// 따라서, 새롭게 발급받은 토큰을 localStorage에 있는 토큰과 교체해주는 interceptor
+apiInstance.interceptors.response.use((response) => {
+  // 기본적으로 만료된 토큰을 보내도, 에러는 발생하지 않는다.
+  // 대신 새롭게 발급된 액세스 토큰 혹은 리프레시 토큰이 온다.
+  // 따라서, 로컬 스토리지에 저장된 토큰과 비교 후, 다르면 교체해준다.
+  if (response.headers.accesstoken) {
+    const accessToken = response.headers.accesstoken;
+    const refreshToken = response.headers.refreshtoken;
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+  }
+});
 
 // // interceptor
 // apiInstance.interceptors.request.use(
