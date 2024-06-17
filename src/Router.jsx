@@ -36,8 +36,9 @@ function Router() {
           </AuthRoute>
         }
       />
+      <Route path="/post/:id" element={<PostSpecPage />} />
       <Route
-        path="/post/:id"
+        path="/post/modify/:id"
         element={
           <AuthRoute>
             <PostModifyPage />
