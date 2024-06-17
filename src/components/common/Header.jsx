@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
 import AlertDropdown from '../modal/AlertDropdown';
-import axios from 'axios';
 import InfoDropdown from '../modal/InfoDropdown';
 
 function Header() {
@@ -17,8 +16,13 @@ function Header() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isInfoDropdownVisible, setIsInfoDropdownVisible] = useState(false);
 
+  const [isLogin, setIsLogin] = useAtom(isLoginAtom);
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const { nickname } = userInfo;
+  let nickname = '';
+
+  if (isLogin && userInfo !== null) {
+    nickname = userInfo.nickname;
+  }
 
   const toggleDropdownClick = (e) => {
     console.log('toggleDropdownClick', isDropdownVisible);
@@ -32,7 +36,7 @@ function Header() {
     setIsInfoDropdownVisible((prev) => !prev);
   };
 
-  const [isLogin, setIsLogin] = useAtom(isLoginAtom);
+  // const isLogin = useAtom(isLoginAtom);
 
   const goToMain = () => {
     navigate('/');
@@ -42,26 +46,8 @@ function Header() {
     navigate('/login');
   };
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.get('/api/auth/logout', {
-  //       headers: {
-  //         access_token: localStorage.getItem('accessToken'),
-  //         refresh_token: localStorage.getItem('refreshToken')
-  //       }
-  //     });
-  //     localStorage.removeItem('accessToken');
-  //     localStorage.removeItem('refreshToken');
-  //     localStorage.removeItem('userInfo');
-  //     // 토클 끄기
-  //     goToMain();
-  //     toggleInfoDropdownClick();
-  //   } catch (error) {
-  //     console.error('Error logging out:', error);
-  //   }
-
   return (
-    <header className="sticky z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
+    <header className="fixed z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
       <button id="logo" onClick={goToMain} aria-label="main button">
         <Logo width={72} height={72} />
       </button>
