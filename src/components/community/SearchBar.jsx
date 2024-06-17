@@ -15,18 +15,18 @@ function SearchBar() {
   //   }
   // };
   return (
-    <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between bg-white">
+    <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between bg-white bg-opacity-10">
       <div className="ml-4 flex flex-row gap-2">
         <button aria-label="whole article">
           <div className="flex flex-row items-center gap-2">
-            <FaCircle className="text-gray-500" />
-            <p className="text-gray-500">전체</p>
+            <FaCircle className="text-orange-600 text-base" />
+            <p className="text-white text-base">전체</p>
           </div>
         </button>
         <button aria-label="hot article">
           <div className="flex flex-row items-center gap-2">
-            <FaFire className="text-gray-500" />
-            <p className="text-gray-500">인기</p>
+            <FaFire className="text-orange-600 text-base" />
+            <p className="text-white text-base">인기</p>
           </div>
         </button>
       </div>

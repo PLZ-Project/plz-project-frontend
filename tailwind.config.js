@@ -3,9 +3,15 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        'BlackHanSans': ['Black Han Sans', 'sans-serif'],
+        'NotoSansKR': ['Noto Sans KR', 'sans-serif']
+      },
       backgroundImage: {
         'default-img': "url('/src/assets/Dva.jpg')",
-        'auth-img': "url('/src/assets/auth.png')"
+        'auth-img': "url('/src/assets/auth.png')",
+        'banner2': "url('/src/assets/banner2.png')",
+        'banner3': "url('/src/assets/banner3.png')"
       },
       colors: {
         mainBlue: '#324FE5',

@@ -10,7 +10,7 @@ function Button({ width, height, children, type, onClick, isValid, rounded }) {
     <button
       onClick={onClick}
       className={`w-[${width}rem] h-[${height}rem] ${
-        type === 'filled' ? 'bg-mainBlue text-white' : 'border border-mainBlue text-mainBlue'
+        type === 'filled' ? 'bg-blue-950 text-white' : 'border bg-blue-950 text-blue-900'
       } ${rounded === 'round' ? 'rounded-lg' : ''}`}
       disabled={isValid}
     >

@@ -5,11 +5,13 @@ import PostModifyPage from './pages/PostModifyPage';
 import PostSpecPage from './pages/PostSpecPage';
 import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
+import LandingPage from './pages/Langding';
 
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/main" element={<MainPage />} />
       <Route path="/login" element={<SigninPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/post" element={<PostArticlePage />} />
