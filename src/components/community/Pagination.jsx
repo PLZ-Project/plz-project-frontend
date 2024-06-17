@@ -5,16 +5,34 @@
 // 페이지네이션은 1부터 시작한다.
 // 페이지네이션을 클릭하면 해당 페이지의 포스트를 보여준다.
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import HorizontalView from './HorizontalView';
 import { dummyData } from '../../mock/dummy';
 import SearchBar from './SearchBar';
 
 function Pagination() {
-  // layoutAtom의 값에 따라 가로형 레이아웃과 세로형 레이아웃을 선택한다.
-  // 다만 현재 컴포넌트에선 layoutAtom의 상태만 필요하고, setLayout은 필요하지 않다.
-  // layout이 true면 가로형 레이아웃, false면 세로형 레이아웃이다.
-  // const [{ layout }] = useAtom(layoutAtom);
-  const postCount = dummyData.length;
+  // articleData : 전체 포스트 데이터
+  // 구조
+  // articleData = {
+  // count => 전체 포스트 개수,
+  // rows => 포스트 데이터 배열
+  // rows 구조
+  // rows = [
+  // {
+  // Board : { name : 게시판 이름 },
+  // Comments : [ 댓글 데이터 배열 ],
+  // Likes : [ 좋아요 데이터 배열 ],
+  // User : { nickname : 작성자 닉네임 },
+  // content : str 형식의 html,
+  // createdAt : "2024-06-17T01:18:27.664Z" 형식의 str,
+  // hit : 조회수,
+  // title : 제목,
+  // id : 포스트 id
+  // }
+  const queryClient = useQueryClient();
+  const articleData = queryClient.getQueryData(['articles']);
+
+  const postCount = articleData.count;
   const postPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(postCount / postPerPage);
@@ -22,7 +40,7 @@ function Pagination() {
   // 현재 페이지에서 보여줄 포스트들
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = dummyData.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = articleData.rows.slice(indexOfFirstPost, indexOfLastPost);
 
   // 페이지 이동
   const paginate = (pageNumber) => setCurrentPage(pageNumber);

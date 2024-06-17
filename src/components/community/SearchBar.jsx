@@ -1,19 +1,37 @@
 import { FaCircle, FaFire, FaSearch } from 'react-icons/fa';
 import { apiInstanceWithoutToken } from '../../api/apiInstance';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import axios from 'axios';
 
 function SearchBar() {
-  // const handleSearchClick = async () => {
-  //   // 검색어 필터를 위한 제목, 제목 + 내용, 작성자 select 값과 검색어를 가져와서 검색 결과를 보여준다.
-  //   // elastic search를 사용하여 검색 결과를 가져온다.
-  //   // 검색 결과는 layout에 관계없이 항상 전체 게시글 개수와 default로 첫번째 페이지 번호와 게시글 9개가 fetch의 결과로 나와야한다.
-  //   // 검색 결과가 없을 경우에는 "검색 결과가 없습니다." 라는 메시지를 보여준다.
-  //   try {
-  //     const response = await apiInstanceWithoutToken.get('/search');
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const [searchCondition, setSearchCondition] = useState('title');
+  const [keyword, setKeyword] = useState('');
+
+  const handleOnChange = (e) => {
+    setKeyword(e.target.value);
+  };
+  const queryClient = useQueryClient();
+  // 검색 api 호출에 따라 캐시되는 ['articles']를 변경.
+
+  const { mutate } = useMutation({
+    mutationFn: async ({ searchCondition, keyword }) => {
+      const response = await axios.get(
+        `api/article/search?searchType=${searchCondition}&keyword=${keyword}`
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['articles'], data);
+    },
+    onError: (err) => {
+      console.error('검색 실패:', err);
+    }
+  });
+
+  const onClickSearch = () => {
+    mutate({ searchCondition, keyword });
+  };
   return (
     <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between bg-white">
       <div className="ml-4 flex flex-row gap-2">
@@ -32,13 +50,24 @@ function SearchBar() {
       </div>
       <div className="mr-4 flex flex-row gap-4">
         {/* 이 div에는 검색어 필터를 위한 제목, 제목 + 내용, 작성자 select 가 들어가야하고, 검색어 입력창과 검색 버튼이 필요하다. */}
-        <select defaultValue={1} className="h-12 focus:outline-none">
-          <option value={1}>제목</option>
-          <option value={2}>제목 + 내용</option>
-          <option value={3}>작성자</option>
+        <select
+          defaultValue={1}
+          className="h-12 focus:outline-none"
+          onChange={(e) => setSearchCondition(e.target.value)}
+        >
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+          <option value="title_content">제목 + 내용</option>
+          <option value="author">작성자</option>
         </select>
-        <input type="text" placeholder="검색어를 입력하세요" className="focus:outline-none" />
-        <button aria-label="search button">
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          className="focus:outline-none"
+          value={keyword}
+          onChange={handleOnChange}
+        />
+        <button aria-label="search button" onClick={onClickSearch}>
           <FaSearch />
         </button>
       </div>

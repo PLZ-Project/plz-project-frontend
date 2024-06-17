@@ -3,6 +3,7 @@ import 'quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
 
@@ -12,7 +13,8 @@ function PostArticleForm({ isEditing, postData }) {
   const [title, setTitle] = useState(postData?.title || '');
   const [content, setContent] = useState(postData?.content || '');
   const [selectedBoard, setSelectedBoard] = useState(1);
-
+  const queryClient = useQueryClient();
+  const boardList = queryClient.getQueryData(['boardList']);
   const handleBoardChange = (e) => {
     setSelectedBoard(e.target.value);
   };
@@ -46,13 +48,12 @@ function PostArticleForm({ isEditing, postData }) {
   const saveToServer = async (file) => {
     const body = new FormData();
     body.append('images', file);
-    console.log(body, file);
     try {
       await axios
         .post('/api/article/imageUpload', body, {
           headers: {
-            access_token: localStorage.getItem('accessToken'),
-            refresh_token: localStorage.getItem('refreshToken')
+            accesstoken: localStorage.getItem('accessToken'),
+            refreshtoken: localStorage.getItem('refreshToken')
           }
         })
         .then((response) => {
@@ -97,15 +98,7 @@ function PostArticleForm({ isEditing, postData }) {
         if (isEditMode) {
           await apiInstance.put(`/posts/${postData.id}`, formData);
         } else {
-          // 서버로 formData를 보내는 로직 추가
-          await axios.post('/api/article', formData, {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              access_token: localStorage.getItem('accessToken'),
-              refresh_token: localStorage.getItem('refreshToken')
-            }
-          });
-          console.log('Post uploaded successfully');
+          await apiInstance.post('/article', formData);
           navigate('/');
         }
       } catch (error) {
@@ -128,9 +121,11 @@ function PostArticleForm({ isEditing, postData }) {
         />
         <div className="flex items-center">
           <select value={selectedBoard} onChange={handleBoardChange}>
-            <option value={1}>자유게시판</option>
-            <option value={2}>질문게시판</option>
-            <option value={3}>정보게시판</option>
+            {boardList.rows.map((board) => (
+              <option key={board.id} value={board.id}>
+                {board.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
