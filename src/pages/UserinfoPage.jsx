@@ -5,7 +5,6 @@ import GlobalLayout from '../components/layout/GlobalLayout';
 function UserinfoPage() {
   return (
     <GlobalLayout>
-      <SideMenu />
       <UserinfoTab />
     </GlobalLayout>
   );

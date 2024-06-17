@@ -8,7 +8,6 @@ function PostModifyPage() {
   const { isEditing, postData } = state;
   return (
     <GlobalLayout>
-      <SideMenu />
       <PostArticleForm isEditing={isEditing} postData={postData} />
     </GlobalLayout>
   );

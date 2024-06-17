@@ -5,7 +5,6 @@ import GlobalLayout from '../components/layout/GlobalLayout';
 function PostArticlePage() {
   return (
     <GlobalLayout>
-      <SideMenu />
       <PostArticleForm isEditing={false} postData={null} />
     </GlobalLayout>
   );
