@@ -7,8 +7,8 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import HorizontalView from './HorizontalView';
-import { dummyData } from '../../mock/dummy';
 import SearchBar from './SearchBar';
+// import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function Pagination() {
   // articleData : 전체 포스트 데이터
@@ -40,7 +40,9 @@ function Pagination() {
   // 현재 페이지에서 보여줄 포스트들
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = articleData.rows.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPostArr = articleData.articles.rows || [];
+  const currentPosts = currentPostArr.slice(indexOfFirstPost, indexOfLastPost);
+  // articleData.rows가 없다면, currentPosts는 없다.
 
   // 페이지 이동
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -57,9 +59,12 @@ function Pagination() {
 
   return (
     <div className="flex flex-col">
+      <div className="mb-4 h-[18.75rem] w-[52rem] rounded-lg bg-white">
+        <img src="/src/assets/dva.png" className="w-full rounded-lg shadow-md" alt="banner img" />
+      </div>
       <SearchBar />
       {/* 조건부 렌더링 */}
-      <div className="h-[40.5rem]">
+      <div className="h-auto rounded-lg">
         <HorizontalView posts={currentPosts} />
       </div>
       {/* 페이지네이션 */}
