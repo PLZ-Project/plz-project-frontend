@@ -44,7 +44,8 @@ function InfoDropdown({ infoToggle }) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('userInfo');
-          console.log('logout success:', res);
+          setIsLogin(false);
+          navigate('/login');
         });
 
       // 토글 끄기
