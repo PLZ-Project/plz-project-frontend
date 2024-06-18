@@ -18,27 +18,21 @@ function SideMenu() {
   return (
     <div className="flex flex-col">
       <Profile />
-      <div className="flex h-[5.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray bg-white">
+      <div className="bg-sky flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
         {isLogin === true ? (
-          <Button
-            width={19.5}
-            height={4.5}
-            type="filled"
-            rounded="round"
-            onClick={handlePostButtonClick}
+          <button
+            onClick={handleLoginButtonClick}
+            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
           >
             글쓰기
-          </Button>
+          </button>
         ) : (
-          <Button
-            width={19.5}
-            height={4.5}
-            type="filled"
-            rounded="round"
-            onClick={handleLoginButtonClick}
+          <button
+            onClick={handlePostButtonClick}
+            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
           >
             로그인
-          </Button>
+          </button>
         )}
       </div>
       <BoardList />

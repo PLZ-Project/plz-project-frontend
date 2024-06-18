@@ -6,9 +6,9 @@ function GlobalLayout({ children }) {
   return (
     <div>
       <Header />
-      <div className="flex h-[calc(100vh-72px)] w-full flex-row justify-center bg-white">
-        <Banner />
-        <div className="z-10 mt-56 flex flex-row gap-4">
+      <div className="flex h-[calc(100vh-72px)] w-full flex-row justify-center bg-[#eeece8]">
+        {/* <Banner /> */}
+        <div className="z-10 mt-40 flex flex-row gap-4">
           <SideMenu />
           {children}
         </div>
