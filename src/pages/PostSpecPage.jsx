@@ -19,12 +19,24 @@ function PostSpecPage() {
     }
   });
 
-  if (postLoading) {
+  const {
+    data: commentData,
+    isLoading: commentLoading,
+    error: commentError
+  } = useQuery({
+    queryKey: ['commentData', id],
+    queryFn: async () => {
+      const response = await apiInstanceWithoutToken.get(`/comment/list/${id}`);
+      return response.data;
+    }
+  });
+
+  if (postLoading || commentLoading) {
     return <div>Loading...</div>;
   }
 
-  if (postError) {
-    return <div>Error occurred while fetching post data.</div>;
+  if (postError || commentError) {
+    return <div>Error occurred while fetching data.</div>;
   }
 
   return (
