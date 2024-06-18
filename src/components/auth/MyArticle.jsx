@@ -18,7 +18,7 @@ function MyArticle() {
   };
 
   return (
-    <div className="flex h-[30rem] w-[52rem] flex-row bg-white">
+    <div className="flex h-[30rem] w-[52rem] flex-row rounded-lg bg-white">
       <div className="flex w-[7.5rem] items-center justify-center">나의 게시글</div>
       <div className="flex flex-col gap-0 border-l-2 border-placeholderGray px-4">
         {/* 나의 게시글 api 요청 후, 그 결과에 따라 map으로 반복문 진행. */}
