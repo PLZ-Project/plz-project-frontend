@@ -20,6 +20,7 @@ export default {
         'mainBlue-900': 'rgba(50, 79, 229, 0.9)',
         warnRed: '#FF1E1E',
         placeholderGray: '#BABABA',
+        sky: '#daefff',
         bgGray: '#E7E7E7',
         yel: '#FFB800'
       }
