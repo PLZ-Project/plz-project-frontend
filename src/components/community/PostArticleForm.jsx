@@ -12,10 +12,11 @@ function PostArticleForm({ isEditing, postData }) {
   const [isEditMode, setIsEditMode] = useState(isEditing);
   const [title, setTitle] = useState(postData?.title || '');
   const [content, setContent] = useState(postData?.content || '');
-  const [selectedBoard, setSelectedBoard] = useState(1);
-  const queryClient = useQueryClient();
-  const boardList = queryClient.getQueryData(['boardList']);
+  const [selectedBoard, setSelectedBoard] = useState(5);
+  const boardInfo = localStorage.getItem('boardList');
+  const boardList = JSON.parse(boardInfo);
   const handleBoardChange = (e) => {
+    console.log(e.target.value);
     setSelectedBoard(e.target.value);
   };
   const handleTitleChange = (e) => {
@@ -121,7 +122,7 @@ function PostArticleForm({ isEditing, postData }) {
         />
         <div className="flex items-center">
           <select value={selectedBoard} onChange={handleBoardChange}>
-            {boardList.rows.map((board) => (
+            {boardList.boards.rows.map((board) => (
               <option key={board.id} value={board.id}>
                 {board.name}
               </option>
