@@ -46,6 +46,13 @@ function Header() {
     navigate('/login');
   };
 
+  const userNickName = () => {
+    const regex = /^(.*shibaDog\d{0,4}).*/;
+    const match = nickname.match(regex);
+    const name = match ? match[1] : nickname.replace(/^\d{0,4}/, '').slice(0, 12);
+    return name;
+  };
+
   return (
     <header className="fixed z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
       <button id="logo" onClick={goToMain} aria-label="main button">
@@ -59,13 +66,16 @@ function Header() {
             <button onClick={toggleDropdownClick} aria-label="alert button">
               알림
             </button>
-            <button
-              onClick={toggleInfoDropdownClick}
-              aria-label="logout button"
-              className="my-2 rounded-md bg-mainBlue-600 px-2"
-            >
-              {nickname} 님 안녕하세요.
-            </button>
+            <p className="flex items-center gap-2">
+              <button
+                onClick={toggleInfoDropdownClick}
+                aria-label="logout button"
+                className="my-2 rounded-md px-2 hover:bg-gray-200"
+              >
+                <span className="text-[#af8430]">{userNickName()}</span>
+              </button>
+              님 안녕하세요.
+            </p>
           </>
         ) : (
           <button onClick={goToLogin} aria-label="login button">
