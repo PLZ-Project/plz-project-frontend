@@ -1,8 +1,7 @@
-import { FaCircle, FaFire, FaSearch } from 'react-icons/fa';
-import { apiInstanceWithoutToken } from '../../api/apiInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
+import { FaCircle, FaFire, FaSearch } from 'react-icons/fa';
 
 function SearchBar() {
   const [searchCondition, setSearchCondition] = useState('title');
@@ -33,7 +32,7 @@ function SearchBar() {
     mutate({ searchCondition, keyword });
   };
   return (
-    <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between rounded-lg bg-white">
+    <div className="mb-4 flex h-[4.5rem] w-[56rem] flex-row items-center justify-between rounded-lg bg-white">
       <div className="ml-4 flex flex-row gap-2">
         <button aria-label="whole article">
           <div className="flex flex-row items-center gap-2">

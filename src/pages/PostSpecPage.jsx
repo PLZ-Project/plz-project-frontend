@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { apiInstanceWithoutToken } from '../api/apiInstance';
 import PostSpecSection from '../components/community/PostSpecSection';
 import GlobalLayout from '../components/layout/GlobalLayout';
-import { apiInstanceWithoutToken } from '../api/apiInstance';
 
 function PostSpecPage() {
   const { id } = useParams();

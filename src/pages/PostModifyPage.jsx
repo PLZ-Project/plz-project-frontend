@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import GlobalLayout from '../components/layout/GlobalLayout';
-import SideMenu from '../components/community/SideMenu';
 import PostArticleForm from '../components/community/PostArticleForm';
+import GlobalLayout from '../components/layout/GlobalLayout';
 
 function PostModifyPage() {
   const { state } = useLocation();

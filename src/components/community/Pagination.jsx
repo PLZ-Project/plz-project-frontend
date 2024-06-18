@@ -4,8 +4,8 @@
 // 페이지 개수 계산 공식 : Math.ceil(전체 포스트 개수 / 한 페이지 최대 포스트 개수)
 // 페이지네이션은 1부터 시작한다.
 // 페이지네이션을 클릭하면 해당 페이지의 포스트를 보여준다.
-import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import HorizontalView from './HorizontalView';
 import SearchBar from './SearchBar';
 // import { apiInstanceWithoutToken } from '../../api/apiInstance';
@@ -58,8 +58,8 @@ function Pagination() {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-4 h-[18.75rem] w-[52rem] rounded-lg bg-white">
+    <div className="ml-7 flex flex-col items-center">
+      <div className="mb-16 h-[18.75rem] w-[60rem] rounded-lg bg-white">
         <img src="/src/assets/dva.png" className="w-full rounded-lg shadow-md" alt="banner img" />
       </div>
       <SearchBar />

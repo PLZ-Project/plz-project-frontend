@@ -48,6 +48,7 @@ const settingArgs = {
       }
     ],
     'no-shadow': 0,
+    'linebreak-style': 0,
     'import/no-unresolved': 0,
     'no-useless-return': 0,
     'react/prop-types': 0,

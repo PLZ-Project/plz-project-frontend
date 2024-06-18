@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
-import Button from '../common/Button';
+import { useNavigate } from 'react-router-dom';
+import { isLoginAtom } from '../../atoms/isLoginAtom';
 import BoardList from './BoardList';
 import Profile from './Profile';
-import { isLoginAtom } from '../../atoms/isLoginAtom';
 
 function SideMenu() {
   const navigate = useNavigate();
@@ -18,18 +17,18 @@ function SideMenu() {
   return (
     <div className="flex flex-col">
       <Profile />
-      <div className="bg-sky flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
+      <div className="bg-slate-100 flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
         {isLogin === true ? (
           <button
-            onClick={handleLoginButtonClick}
-            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
+            onClick={handlePostButtonClick}
+            className="h-14 w-[48%] bg-blue-950 text-white"
           >
             글쓰기
           </button>
         ) : (
           <button
-            onClick={handlePostButtonClick}
-            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
+            onClick={handleLoginButtonClick}
+            className="h-14 w-40 rounded-lg bg-mainBlue text-white"
           >
             로그인
           </button>

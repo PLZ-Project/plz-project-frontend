@@ -2,11 +2,12 @@ import { Route, Routes } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import PostArticlePage from './pages/PostArticlePage';
 import PostModifyPage from './pages/PostModifyPage';
-import { AuthRoute, NonAuthRoute } from './router/customRoutes';
-import UserinfoPage from './pages/UserinfoPage';
 import PostSpecPage from './pages/PostSpecPage';
 import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
+import UserinfoPage from './pages/UserinfoPage';
+import TestPage from './pages/testPage';
+import { AuthRoute, NonAuthRoute } from './router/customRoutes';
 
 function Router() {
   return (
@@ -54,6 +55,15 @@ function Router() {
         }
       />
       <Route path="/post/:id" element={<PostSpecPage />} />
+
+      <Route
+        path="/test/:id"
+        element={
+          <AuthRoute>
+            <TestPage />
+          </AuthRoute>
+        }
+      />
     </Routes>
   );
 }
