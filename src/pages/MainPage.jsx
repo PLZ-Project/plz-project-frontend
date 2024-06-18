@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import Pagination from '../components/community/Pagination';
 import GlobalLayout from '../components/layout/GlobalLayout';
 import { apiInstanceWithoutToken } from '../api/apiInstance';
@@ -9,29 +10,31 @@ function MainPage() {
   // 이후, localStorage에 저장된 토큰과 유저정보를 이용하여 로그인 여부를 판단한다.
   // const [articles, setArticles] = useState({});
 
-  const {
-    data: boardList,
-    isLoading: boardLoading,
-    error: boardError
-  } = useQuery({
-    queryKey: ['boardList'],
-    queryFn: async () => {
-      const response = await apiInstanceWithoutToken.get('/board/list');
-      return response.data;
-    }
-  });
+  // const {
+  //   data: boardList,
+  //   isLoading: boardLoading,
+  //   error: boardError
+  // } = useQuery({
+  //   queryKey: ['boardList'],
+  //   queryFn: async () => {
+  //     const response = await apiInstanceWithoutToken.get('/board/list');
+  //     return response.data;
+  //   }
+  // });
 
-  const {
-    data: communityList,
-    isLoading: communityLoading,
-    error: communityError
-  } = useQuery({
-    queryKey: ['communityList'],
-    queryFn: async () => {
-      const response = await axios.get('/api/community/list');
-      return response.data;
-    }
-  });
+  useEffect(() => {
+    const fetchBoardList = async () => {
+      try {
+        await axios.get('/api/board/list').then((response) => {
+          console.log('게시판 리스트', response.data);
+          localStorage.setItem('boardList', JSON.stringify(response.data));
+        });
+      } catch (error) {
+        console.error('Error fetching board list:', error);
+      }
+    };
+    fetchBoardList();
+  }, []);
 
   const {
     data: articles,
@@ -45,11 +48,11 @@ function MainPage() {
     }
   });
 
-  if (boardLoading || communityLoading || articlesLoading) {
+  if (articlesLoading) {
     return <div>Loading...</div>;
   }
 
-  if (boardError || communityError || articlesError) {
+  if (articlesError) {
     return <div>Error occurred while fetching data.</div>;
   }
   // const fetchBoardList = async () => {
