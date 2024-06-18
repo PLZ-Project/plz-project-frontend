@@ -73,20 +73,20 @@ function PostSpecSection({ id }) {
   //   mutationFn: async({})
   // });
 
-  // const { mutate: commentPost } = useMutation({
-  //   mutationFn: async ({ articleId, content }) => {
-  //     await apiInstance.post('/comment', {
-  //       articleId,
-  //       content
-  //     });
-  //   },
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries(['postData', id]);
-  //   },
-  //   onError: (error) => {
-  //     console.error('Error occurred while posting comment:', error);
-  //   }
-  // });
+  const { mutate: commentPost } = useMutation({
+    mutationFn: async ({ articleId, content }) => {
+      await apiInstance.post('/comment', {
+        articleId,
+        content
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['postData', id]);
+    },
+    onError: (error) => {
+      console.error('Error occurred while posting comment:', error);
+    }
+  });
 
   const handleLike = () => {
     like({ id });
@@ -94,6 +94,7 @@ function PostSpecSection({ id }) {
 
   const handleCommentSubmit = () => {
     commentPost({ articleId: id, content: commentText });
+    setCommentText('');
   };
   return (
     <div className="flex w-[52rem] flex-col rounded-lg">
