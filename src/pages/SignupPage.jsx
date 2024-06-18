@@ -41,6 +41,8 @@ function SignupPage() {
       });
       // navigate('/');
       console.log('회원가입 성공??');
+      alert('회원가입이 완료되었습니다. 이메일을 인증해주세요.');
+      navigate('/login');
     } catch (error) {
       console.error('회원가입 실패:', error);
     }
