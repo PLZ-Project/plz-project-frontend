@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
@@ -7,7 +8,7 @@ export default {
         'BlackHanSans': ['Black Han Sans', 'sans-serif'],
         'NotoSansKR': ['Noto Sans KR', 'sans-serif'],
         'NotoSansSC': ['Noto+Sans+SC', 'sans-serif'],
-        'IBMPlexSansKR': ['IBM+Plex+Sans+KR', 'sans-serif']
+        'IBMPlexSansKR': ['IBM+Plex+Sans+KR', 'sans-serif'],
       },
       backgroundImage: {
         'default-img': "url('/src/assets/Dva.png')",

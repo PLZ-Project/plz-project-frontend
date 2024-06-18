@@ -51,12 +51,12 @@ function SignupPage() {
   };
 
   return (
-    <div className="relative flex h-screen items-center justify-center bg-auth-img object-cover">
+    <div className="relative flex h-screen items-center justify-center bg-test bg-cover">
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
-        <AuthLogo />
+        <AuthLogo className="size-20" />
       </div>
       <div className="flex w-[29rem] flex-col items-center">
-        <h1 className="font-semiboldbold mb-10 text-4xl text-white text-opacity-85">회원가입</h1>
+        <h1 className="mb-6 text-5xl text-white tracking-wide  text-opacity-85 text-[2.5rem] font-BlackHanSans font-thin">회원가입</h1>
         <div>
           <form className="flex flex-col gap-2">
             <DynamicInput
@@ -96,12 +96,12 @@ function SignupPage() {
             )}
             <button
               onClick={handleSignupSubmit}
-              className="text-white' h-12 w-[20.625rem] rounded-lg bg-mainBlue text-white"
+              className="text-white' h-[3.2rem] w-[20.625rem] tracking-wide rounded-lg mt-2 font-NotoSansKR text-[15px] bg-blue-900 text-white"
             >
               회원가입
             </button>
           </form>
-          <div className="mt-4 flex items-center justify-center">
+          <div className="mt-5 flex items-center justify-center">
             <p className="mr-2 text-white">아직 회원이 아니시라면?</p>
             <button onClick={handleSigninButtonClick} className="font-semibold text-yel">
               로그인

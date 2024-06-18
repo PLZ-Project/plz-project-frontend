@@ -49,7 +49,7 @@ function SigninPage() {
         <AuthLogo className="size-20" />
       </div>
       <div className="flex w-[29rem] mt-16 flex-col items-center">
-        <h1 className="font-semiboldbold mb-6 text-5xl text-white tracking-wide  text-opacity-85 text-[2.5rem] font-BlackHanSans">로그인</h1>
+        <h1 className="mb-6 text-5xl text-white tracking-wide  text-opacity-85 text-[2.5rem] font-BlackHanSans font-thin">로그인</h1>
         <div>
           <form className="flex flex-col gap-2">
             <DynamicInput
