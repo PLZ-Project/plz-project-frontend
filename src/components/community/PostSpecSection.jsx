@@ -3,14 +3,50 @@ import sanitize from 'sanitize-html';
 import { apiInstance } from '../../api/apiInstance';
 import { IoMdRefresh } from 'react-icons/io';
 import { useState } from 'react';
+import { GoPencil } from 'react-icons/go';
+import { RiDeleteBin2Line } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
+import { Delta } from 'quill/core';
+import PostDelete from '../modal/PostDelete';
+import { FaSave, FaTimesCircle } from 'react-icons/fa';
 
 function PostSpecSection({ id }) {
   const queryClient = useQueryClient();
   const postData = queryClient.getQueryData(['postData', id]);
   const commentData = queryClient.getQueryData(['commentData', id]) || { rows: [] };
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const userId = userInfo.id;
-  console.log(commentData);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCommentEditing, setIsCommentEditing] = useState(false);
+  const [commentModifyText, setCommentModifyText] = useState('');
+  let userId;
+  if (userInfo) {
+    userId = userInfo.id;
+  }
+  const postContent = JSON.parse(postData.content);
+  // const
+  function deltaToHtml(deltaData) {
+    let htmlContent = '';
+
+    for (const op of deltaData.ops) {
+      if (typeof op.insert === 'string') {
+        // 텍스트 삽입
+        htmlContent += `<p>${op.insert.replace(/\n/g, '<br>')}</p>`;
+      } else if (typeof op.insert === 'object') {
+        // 이미지 삽입
+        htmlContent += `<p><img src="${op.insert.image}"></p>`;
+      }
+    }
+
+    return htmlContent;
+  }
+
+  const saniContent = deltaToHtml(postContent);
+
+  const handleEditClick = () => {
+    navigate('/post/modify/:id', { state: { isEditing: true, postData } });
+  };
+
   // console.log(postData);
   // 게시글 상세 정보 컴포넌트
   // 게시글 상세 정보 컴포넌트는 게시글의 상세 정보를 보여주는 컴포넌트이다.
@@ -33,7 +69,7 @@ function PostSpecSection({ id }) {
     setCommentText(e.target.value);
   };
 
-  const contents = sanitize(postData.content, {
+  const contents = sanitize(saniContent, {
     allowedTags: sanitize.defaults.allowedTags.concat(['img', 'h1', 'h2', 'p']),
     allowedAttributes: {
       img: ['src'],
@@ -69,10 +105,6 @@ function PostSpecSection({ id }) {
     }
   });
 
-  // const { mutate: modifyPost } = useMutation({
-  //   mutationFn: async({})
-  // });
-
   const { mutate: commentPost } = useMutation({
     mutationFn: async ({ articleId, content }) => {
       await apiInstance.post('/comment', {
@@ -81,10 +113,37 @@ function PostSpecSection({ id }) {
       });
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['postData', id]);
+      queryClient.invalidateQueries(['commentData', id]);
     },
     onError: (error) => {
       console.error('Error occurred while posting comment:', error);
+    }
+  });
+
+  const { mutate: commentModify } = useMutation({
+    mutationFn: async ({ commentId }) => {
+      await apiInstance.put(`/comment/${commentId}`, {
+        content: commentModifyText
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['commentData', id]);
+      handleCommentEditMode();
+    },
+    onError: (error) => {
+      console.error('Error occurred while modifying comment:', error);
+    }
+  });
+
+  const { mutate: commentDelete } = useMutation({
+    mutationFn: async ({ commentId }) => {
+      await apiInstance.delete(`/comment/${commentId}`);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['commentData', id]);
+    },
+    onError: (error) => {
+      console.error('Error occurred while deleting comment:', error);
     }
   });
 
@@ -92,15 +151,41 @@ function PostSpecSection({ id }) {
     like({ id });
   };
 
+  const handleCommentEditMode = () => {
+    setIsCommentEditing((prev) => !prev);
+  };
+
   const handleCommentSubmit = () => {
     commentPost({ articleId: id, content: commentText });
     setCommentText('');
   };
+
+  const changeCommentText = (e) => {
+    setCommentModifyText(e.target.value);
+  };
+
+  const toggleDeleteModal = () => {
+    setIsDeleteModalOpen((prev) => !prev);
+  };
   return (
     <div className="flex w-[52rem] flex-col rounded-lg">
       <div>
-        <div id="title" className="flex h-[36px] items-center rounded-t-lg bg-white pl-2">
+        <div
+          id="title"
+          className="flex h-[36px] items-center justify-between rounded-t-lg bg-white pl-2"
+        >
           <p className="pl-2 text-lg">{postData.title}</p>
+
+          {postData.user.id === userId && (
+            <div className="flex flex-row gap-0">
+              <button onClick={handleEditClick} aria-label="edit button" className="pr-2">
+                <GoPencil size={24} />
+              </button>
+              <button aria-label="delete button" className="pr-2" onClick={toggleDeleteModal}>
+                <RiDeleteBin2Line size={24} />
+              </button>
+            </div>
+          )}
         </div>
         <div
           id="desc"
@@ -172,21 +257,53 @@ function PostSpecSection({ id }) {
         </div>
         <div id="comment list">
           {commentData.comments.rows.map((comment) => (
-            <div key={comment.id} className="flex flex-col items-center justify-center">
-              <div className="flex w-[48rem] flex-row items-center justify-between border border-placeholderGray">
-                <div className="flex flex-row items-center">
-                  {/* <p className="ml-4">{comment.user.nickname}</p> */}
-                  <p className="ml-4">{comment.content}</p>
-                </div>
-                <div className="flex flex-row items-center gap-2">
-                  <p>{convertDate(convertDate(comment.createdAt))}</p>
-                  <button className="h-6 w-12 bg-red-500 text-white">삭제</button>
-                </div>
+            <div key={comment.id} className="flex flex-row justify-between">
+              <div className="flex flex-col">
+                <div id="comment author">{comment.User.nickname}</div>
+                {isCommentEditing ? (
+                  <textarea
+                    id="comment content"
+                    value={commentModifyText}
+                    onChange={changeCommentText}
+                  />
+                ) : (
+                  <div id="comment content">{comment.content}</div>
+                )}
+                <div id="comment createdAt">{convertDate(comment.createdAt)}</div>
+              </div>
+              <div className="flex flex-row">
+                {userId === comment.User.id && (
+                  <>
+                    {isCommentEditing ? (
+                      <>
+                        <button
+                          className="text-green-500"
+                          onClick={() => commentModify({ commentId: comment.id })}
+                        >
+                          <FaSave size={18} />
+                        </button>
+                        <button className="text-red-500" onClick={handleCommentEditMode}>
+                          <FaTimesCircle size={18} />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={handleCommentEditMode}>
+                          <GoPencil size={18} />
+                        </button>
+                        <button onClick={() => commentDelete({ commentId: comment.id })}>
+                          <RiDeleteBin2Line size={18} />
+                        </button>
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           ))}
         </div>
       </div>
+      {isDeleteModalOpen && <PostDelete toggleModal={toggleDeleteModal} postId={postData.id} />}
     </div>
   );
 }
