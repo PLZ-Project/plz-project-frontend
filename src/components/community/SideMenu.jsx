@@ -21,14 +21,14 @@ function SideMenu() {
       <div className="bg-sky flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
         {isLogin === true ? (
           <button
-            onClick={handleLoginButtonClick}
+            onClick={handlePostButtonClick}
             className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
           >
             글쓰기
           </button>
         ) : (
           <button
-            onClick={handlePostButtonClick}
+            onClick={handleLoginButtonClick}
             className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
           >
             로그인

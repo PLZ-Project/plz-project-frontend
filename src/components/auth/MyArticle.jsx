@@ -5,7 +5,7 @@ function MyArticle() {
   const navigate = useNavigate();
 
   const handleEditClick = () => {
-    navigate('/post/:id', { state: { isEditing: true, postData } });
+    navigate('/post/modify/:id', { state: { isEditing: true, postData } });
   };
 
   const fetchMyArticle = async () => {
