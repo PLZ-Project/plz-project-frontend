@@ -34,14 +34,14 @@ function BoardList() {
   };
 
   return (
-    <div className="bg-sky grid w-auto gap-2 rounded-b-lg p-6">
+    <div className="grid w-72 gap-2 rounded-b-lg p-6 -ml-12 -mt-[1.9rem]">
       {boardList.boards.rows.map((board) => (
         <button
           key={board.id}
           onClick={() => onClickBoard(board.id)}
-          className="flex w-full cursor-pointer items-center border-b border-bgGray hover:bg-gray-300"
+          className="flex mb-1 w-72 cursor-pointer items-center"
         >
-          <p className="w-full rounded-[8px] bg-white p-4 hover:bg-gray-300 hover:text-black">
+          <p className="flex justify-center items-center w-80 h-16 rounded-[8px] bg-black bg-opacity-85 font-GowunDodum text-white hover:bg-black hover:bg-opacity-85 hover:text-white text-[1.2rem]">
             {board.name}
           </p>
         </button>

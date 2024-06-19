@@ -6,8 +6,9 @@ import { apiInstance, apiInstanceWithoutToken } from '../api/apiInstance';
 import GlobalLayout from '../components/layout/GlobalLayout';
 
 function TestPage() {
-  const socket = io('https://www.plz-project.site', {
+  const socket = io('https://plz-project.site', {
     transports: ['websocket', 'polling'],
+    withCredentials: true,
   });
 
   const { id } = useParams();
@@ -42,8 +43,7 @@ function TestPage() {
     });
 
     socket.on('newComment', (newComment) => {
-      console.log(11111111111111111111);
-      queryClient.invalidateQueries(['commentData', id]); // 새 댓글 도착 시 쿼리 무효화
+      console.log('New comment received:', newComment);
     });
 
     return () => {

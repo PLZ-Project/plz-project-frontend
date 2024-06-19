@@ -9,7 +9,7 @@ function HorizontalPost({ id, board, likes, title, views, date, writer }) {
   };
   return (
     <div
-      className="flex h-[4.5rem] w-[52rem] flex-row gap-4 border-b border-b-black bg-white px-4 hover:bg-gray-300"
+      className="flex h-[5.5rem] w-[64rem] flex-row gap-4 border-b  bg-white px-4 hover:bg-gray-300"
       onClick={clickPost}
     >
       <div className="flex w-7 items-center justify-center">
@@ -21,13 +21,13 @@ function HorizontalPost({ id, board, likes, title, views, date, writer }) {
       </div>
       <div className="flex flex-col justify-center">
         <div>{title}</div>
-        <div className="flex w-[42.75rem] flex-row justify-between">
+        <div className="flex w-[52rem] flex-row justify-between">
           <div className="flex flex-row gap-2">
             <p>{board}</p>
             <p>{date}</p>
             <p>조회 {views}</p>
           </div>
-          <div>{writer}</div>
+          <div className="ml-16">{writer}</div>
         </div>
       </div>
     </div>

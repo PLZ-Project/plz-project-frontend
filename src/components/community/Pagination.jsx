@@ -58,9 +58,9 @@ function Pagination() {
   };
 
   return (
-    <div className="ml-4 flex flex-col items-center">
-      <div className="mb-16 h-[18.75rem] w-[60rem] rounded-lg bg-white">
-        <img src="/src/assets/dva.png" className="w-full rounded-lg shadow-md" alt="banner img" />
+    <div className="ml-2 flex flex-col items-center">
+      <div className="mb-5 h-[26rem] w-[64rem] rounded-lg bg-white">
+        <img src="/src/assets/dva.png" className="w-full h-[26rem] rounded-lg shadow-md" alt="banner img" />
       </div>
       <SearchBar />
       {/* 조건부 렌더링 */}

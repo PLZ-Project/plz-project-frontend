@@ -19,10 +19,10 @@ function Profile() {
 
   return (
     <div className=" relative flex flex-col h-auto items-center justify-center rounded-t-1x">
-      <div className="-pb-5 w-[100] flex flex-col items-center justify-center gap-6 rounded-2xl">
-        <img src="/src/assets/shibaDog.png" className="h-64 w-72 rounded-t-lg" />
+      <div className="-pb-5 w-80 flex flex-col items-center justify-center gap-6 rounded-2xl">
+        <img src="/src/assets/shibaDog.png" className="h-72 w-80 rounded-t-lg" />
       </div>
-      <div className="flex flex-col items-center w-72 h-32 justify-center px-7 pt-3 z-[1] size-48 rounded-b-lg bg-black bg-opacity-80 content-['']">
+      <div className="flex flex-col items-center w-80 h-32 justify-center px-7 pt-3 z-[1] rounded-b-lg bg-black bg-opacity-80 content-['']">
         <p className="relative flex flex-col -mt-2 gap-2 font-BebasNeue mb-5 text-white  text-[1.5rem] text-opacity-90 font-medium tracking-wide">
           {userNickName().toUpperCase()}
         </p>

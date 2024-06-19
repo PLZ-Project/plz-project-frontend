@@ -15,54 +15,54 @@ function Router() {
       <Route path="/" element={<MainPage />} />
       <Route
         path="/login"
-        element={
+        element={(
           <NonAuthRoute>
             <SigninPage />
           </NonAuthRoute>
-        }
+        )}
       />
       <Route
         path="/signup"
-        element={
+        element={(
           <NonAuthRoute>
             <SignupPage />
           </NonAuthRoute>
-        }
+        )}
       />
       <Route
         path="/post"
-        element={
+        element={(
           <AuthRoute>
             <PostArticlePage />
           </AuthRoute>
-        }
+        )}
       />
       <Route path="/post/:id" element={<PostSpecPage />} />
       <Route
         path="/post/modify/:id"
-        element={
+        element={(
           <AuthRoute>
             <PostModifyPage />
           </AuthRoute>
-        }
+        )}
       />
       <Route
         path="/userinfo"
-        element={
+        element={(
           <AuthRoute>
             <UserinfoPage />
           </AuthRoute>
-        }
+        )}
       />
       <Route path="/post/:id" element={<PostSpecPage />} />
 
       <Route
         path="/test/:id"
-        element={
+        element={(
           <AuthRoute>
             <TestPage />
           </AuthRoute>
-        }
+        )}
       />
     </Routes>
   );
