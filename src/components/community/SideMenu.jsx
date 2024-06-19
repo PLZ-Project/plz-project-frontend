@@ -16,7 +16,7 @@ function SideMenu() {
 
   return (
     <div className="flex flex-col">
-      <Profile />
+      {isLogin && <Profile />}
       <div className="bg-slate-100 flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
         {isLogin === true ? (
           <button

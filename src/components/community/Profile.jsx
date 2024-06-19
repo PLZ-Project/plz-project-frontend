@@ -18,16 +18,16 @@ function Profile() {
   };
 
   return (
-    <div className="w-70 relative flex h-auto items-center justify-center rounded-t-1x">
-      <div className="-pb-5 w-[100] flex flex-col items-center justify-center gap-6 rounded-l-2xl">
-        <img src="/src/assets/shibaDog.png" className="size-48 rounded-l-3xl" />
+    <div className=" relative flex flex-col h-auto items-center justify-center rounded-t-1x">
+      <div className="-pb-5 w-[100] flex flex-col items-center justify-center gap-6 rounded-2xl">
+        <img src="/src/assets/shibaDog.png" className="h-64 w-72 rounded-t-lg" />
       </div>
-      <div className="flex flex-col items-center justify-center px-7 pt-3 z-[1] size-48 rounded-r-3xl bg-black bg-opacity-80 content-['']">
-        <p className="relative flex flex-col -mt-2 gap-2 font-BebasNeue mb-5 text-white bg-white text-[1.5rem] text-opacity-90 font-medium tracking-wide">
+      <div className="flex flex-col items-center w-72 h-32 justify-center px-7 pt-3 z-[1] size-48 rounded-b-lg bg-black bg-opacity-80 content-['']">
+        <p className="relative flex flex-col -mt-2 gap-2 font-BebasNeue mb-5 text-white  text-[1.5rem] text-opacity-90 font-medium tracking-wide">
           {userNickName().toUpperCase()}
         </p>
-        <p className="-mt-[1.1rem] px-2 py-[0.1rem] text-black bg-white font-GowunDodum">{email}</p>
-        <button onClick={goToMyPage} className="bg-red-900 text-white h-12 w-[9.6rem] py-1 font-IBMPlexSansKR font-medium text-center text-[1rem]">
+        <p className="-mt-[1.1rem] px-2 py-[0.1rem] text-white font-GowunDodum">{email}</p>
+        <button onClick={goToMyPage} className="text-yel h-12 w-[9.6rem] py-1 font-IBMPlexSansKR font-medium text-center text-[1rem]">
           수정
         </button>
       </div>

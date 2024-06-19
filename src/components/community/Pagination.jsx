@@ -58,7 +58,7 @@ function Pagination() {
   };
 
   return (
-    <div className="ml-7 flex flex-col items-center">
+    <div className="ml-4 flex flex-col items-center">
       <div className="mb-16 h-[18.75rem] w-[60rem] rounded-lg bg-white">
         <img src="/src/assets/dva.png" className="w-full rounded-lg shadow-md" alt="banner img" />
       </div>
