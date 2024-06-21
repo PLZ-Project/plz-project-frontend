@@ -6,33 +6,17 @@
 // 페이지네이션을 클릭하면 해당 페이지의 포스트를 보여준다.
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import HorizontalView from './HorizontalView';
 import SearchBar from './SearchBar';
+import { selectedBoardIdAtom } from '../../atoms/selectBoardId';
+import { articlesAtom } from '../../atoms/articlesAtom';
 // import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function Pagination() {
-  // articleData : 전체 포스트 데이터
-  // 구조
-  // articleData = {
-  // count => 전체 포스트 개수,
-  // rows => 포스트 데이터 배열
-  // rows 구조
-  // rows = [
-  // {
-  // Board : { name : 게시판 이름 },
-  // Comments : [ 댓글 데이터 배열 ],
-  // Likes : [ 좋아요 데이터 배열 ],
-  // User : { nickname : 작성자 닉네임 },
-  // content : str 형식의 html,
-  // createdAt : "2024-06-17T01:18:27.664Z" 형식의 str,
-  // hit : 조회수,
-  // title : 제목,
-  // id : 포스트 id
-  // }
-  const queryClient = useQueryClient();
-  const articleData = queryClient.getQueryData(['articles']);
+  const [postDatas, setPostDatas] = useAtom(articlesAtom);
 
-  const postCount = articleData.count;
+  const postCount = postDatas.count;
   const postPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(postCount / postPerPage);
@@ -40,7 +24,7 @@ function Pagination() {
   // 현재 페이지에서 보여줄 포스트들
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPostArr = articleData.articles.rows || [];
+  const currentPostArr = postDatas.rows || [];
   const currentPosts = currentPostArr.slice(indexOfFirstPost, indexOfLastPost);
   // articleData.rows가 없다면, currentPosts는 없다.
 

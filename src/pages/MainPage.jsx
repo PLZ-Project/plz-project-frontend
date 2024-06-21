@@ -1,31 +1,19 @@
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useAtom } from 'jotai';
 import Pagination from '../components/community/Pagination';
 import GlobalLayout from '../components/layout/GlobalLayout';
 import { apiInstanceWithoutToken } from '../api/apiInstance';
+import { selectedBoardIdAtom } from '../atoms/selectBoardId';
+import { articlesAtom } from '../atoms/articlesAtom';
 
 function MainPage() {
-  // 메인페이지로 이동하면, 쿠키에 저장된 토큰과 유저정보를 localStorage에 저장한다.
-  // 이후, localStorage에 저장된 토큰과 유저정보를 이용하여 로그인 여부를 판단한다.
-  // const [articles, setArticles] = useState({});
-
-  // const {
-  //   data: boardList,
-  //   isLoading: boardLoading,
-  //   error: boardError
-  // } = useQuery({
-  //   queryKey: ['boardList'],
-  //   queryFn: async () => {
-  //     const response = await apiInstanceWithoutToken.get('/board/list');
-  //     return response.data;
-  //   }
-  // });
+  const [boardId] = useAtom(selectedBoardIdAtom);
+  const [articles, setArticles] = useAtom(articlesAtom);
 
   useEffect(() => {
     const fetchBoardList = async () => {
       try {
-        await axios.get('/api/board/list').then((response) => {
+        await apiInstanceWithoutToken.get('/board/list').then((response) => {
           console.log('게시판 리스트', response.data);
           localStorage.setItem('boardList', JSON.stringify(response.data));
         });
@@ -36,63 +24,24 @@ function MainPage() {
     fetchBoardList();
   }, []);
 
-  const {
-    data: articles,
-    isLoading: articlesLoading,
-    error: articlesError
-  } = useQuery({
-    queryKey: ['articles'],
-    queryFn: async () => {
-      const response = await axios.get('/api/article/search');
-      return response.data;
-    }
-  });
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        await apiInstanceWithoutToken.get(`/article/search?boardId=${boardId}`).then((response) => {
+          console.log('게시글 리스트', response.data);
+          setArticles(response.data.articles);
+        });
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+    fetchArticles();
+  }, [boardId]);
 
-  if (articlesLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (articlesError) {
-    return <div>Error occurred while fetching data.</div>;
-  }
-  // const fetchBoardList = async () => {
-  //   try {
-  //     await axios.get('/api/board/list').then((response) => {
-  //       console.log('게시판 리스트', response.data);
-  //     });
-  //   } catch (error) {
-  //     console.error('Error fetching board list:', error);
-  //   }
-  // };
-  // const fetchCommunityList = async () => {
-  //   try {
-  //     await axios.get('/api/community/list').then((response) => {
-  //       console.log('커뮤니티 리스트', response.data);
-  //     });
-  //   } catch (error) {
-  //     console.error('Error fetching community list:', error);
-  //   }
-  // };
-  // const fetchArticles = async () => {
-  //   try {
-  //     await axios.get('/api/article/search').then((response) => {
-  //       console.log('게시글 리스트', response.data);
-  //       setArticles(response.data);
-  //     });
-  //   } catch (error) {
-  //     console.error('Error fetching articles:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchBoardList();
-  //   fetchCommunityList();
-  //   fetchArticles();
-  // }, []);
   return (
     <GlobalLayout>
       {/* <SideMenu /> */}
-      <Pagination />
+      <Pagination postDatas={articles} />
     </GlobalLayout>
   );
 }

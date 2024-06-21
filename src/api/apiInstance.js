@@ -23,6 +23,14 @@ export const apiInstance = axios.create(
   }
 );
 
+export const OAuthInstance = axios.create({
+  baseURL: 'https://accounts.google.com',
+  headers: {
+    'Access-Control-Allow-Origin': '*', // CORS 정책 우회를 위한 설정 (실제 서버에서는 이 설정이 필요할 수 있습니다)
+    'Content-Type': 'application/json'
+  }
+});
+
 // 로컬스토리지에 저장되어있는 access_token, refresh_token을 가져와서 헤더에 넣어주는 interceptor
 apiInstance.interceptors.request.use(
   (config) => {

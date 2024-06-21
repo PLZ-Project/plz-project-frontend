@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
 import { isLoginAtom } from '../atoms/isLoginAtom';
 import GoogleLogo from '../../src/assets/google.svg?react';
 import DiscordLogo from '../../src/assets/discord.svg?react';
 import AuthLogo from '../../src/assets/authlogo.svg?react';
-import { apiInstanceWithoutToken } from '../api/apiInstance';
+import { OAuthInstance, apiInstanceWithoutToken } from '../api/apiInstance';
 
 function SigninPage() {
   const navigate = useNavigate();
@@ -38,6 +40,56 @@ function SigninPage() {
   };
   const handleSignupButtonClick = () => {
     navigate('/signup');
+  };
+
+  // const handleGoogleLoginResponse = (response) => {
+  //   if (response.isSuccess === true) {
+  //     // 토큰 저장
+  //     localStorage.setItem('accessToken', response.accessToken);
+  //     localStorage.setItem('refreshToken', response.refreshToken);
+  //     localStorage.setItem('userInfo', JSON.stringify(response.userInfo));
+  //     // 사용자 정보 활용
+  //     // const { id, email, nickname, role } = response.userInfo;
+  //     // 사용자 프로필 페이지 등 구현
+  //     setIsLogin(true);
+  //     navigate('/');
+  //   } else {
+  //     // 로그인 실패 처리
+  //     console.error('Google login failed:', response);
+  //   }
+  // };
+
+  // const handleGoogleLogin = async () => {
+  //   window.location.href = 'https://plz-project.site/api/auth/google';
+  //   // 백엔드 서버로부터 응답을 받으면 handleGoogleLoginResponse 함수를 호출
+  //   const response = await fetch('https://plz-project.site/api/auth/google/callback')
+  //     .then((res) => res.json())
+  //     .catch((err) => console.error('Error:', err));
+  //   handleGoogleLoginResponse(response);
+  const handleLoginSuccess = async (credenitalResponse) => {
+    console.log(credenitalResponse);
+    try {
+      const url = '/o/oauth2/v2/auth';
+
+      const res = await OAuthInstance.get(url, {
+        params: {
+          client_id: '523405884505-gg96ji9js5qb6tkuq906ckhcnqre737e.apps.googleusercontent.com',
+          redirect_uri: 'https://plz-project.site/api/auth/google/callback',
+          response_type: 'code',
+          scope: 'email profile'
+        }
+      });
+      console.log('백엔드 응답:', res.data);
+      // localStorage.setItem('accessToken', res.data.accessToken);
+      // localStorage.setItem('refreshToken', res.data.refreshToken);
+      // localStorage.setItem('userInfo', JSON.stringify(res.data.user));
+    } catch (error) {
+      console.error('로그인 에러:', error);
+    }
+  };
+
+  const handleLoginFailure = (error) => {
+    console.error('로그인 실패:', error);
   };
 
   const handleGoMain = () => {
@@ -80,7 +132,15 @@ function SigninPage() {
           </form>
           <div className="mt-4 flex flex-row justify-center gap-6">
             <button aria-label="구글 로그인">
-              <GoogleLogo />
+              <GoogleOAuthProvider clientId="523405884505-gg96ji9js5qb6tkuq906ckhcnqre737e.apps.googleusercontent.com">
+                <GoogleLogin
+                  onSuccess={handleLoginSuccess}
+                  onError={handleLoginFailure}
+                  text="구글로 로그인"
+                >
+                  <GoogleLogo />
+                </GoogleLogin>
+              </GoogleOAuthProvider>
             </button>
             <button aria-label="디스코드 로그인">
               <DiscordLogo />
