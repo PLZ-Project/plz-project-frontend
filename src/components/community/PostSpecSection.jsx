@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import sanitize from 'sanitize-html';
-import { apiInstance } from '../../api/apiInstance';
-import { IoMdRefresh } from 'react-icons/io';
 import { useState } from 'react';
+import { FaSave, FaTimesCircle } from 'react-icons/fa';
 import { GoPencil } from 'react-icons/go';
+import { IoMdRefresh } from 'react-icons/io';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { Delta } from 'quill/core';
+import sanitize from 'sanitize-html';
+import { apiInstance } from '../../api/apiInstance';
 import PostDelete from '../modal/PostDelete';
-import { FaSave, FaTimesCircle } from 'react-icons/fa';
 
 function PostSpecSection({ id }) {
   const queryClient = useQueryClient();
@@ -208,11 +207,11 @@ function PostSpecSection({ id }) {
       />
       <div
         id="likeBtn"
-        className="mb-4 flex h-[3rem] flex-row justify-center rounded-b-lg bg-white"
+        className="mb-4 flex h-12 flex-row justify-center rounded-b-lg bg-white"
       >
         <button
           onClick={handleLike}
-          className="h-[2rem] rounded-md bg-gray-200 px-2 hover:bg-gray-300"
+          className="h-8 rounded-md bg-gray-200 px-2 hover:bg-gray-300"
         >
           좋아요 {postData.likeUserList.length}
         </button>
@@ -220,7 +219,7 @@ function PostSpecSection({ id }) {
       <div id="comment box">
         <div
           id="comment info"
-          className="mb-4 flex h-[3rem] flex-row items-center justify-between rounded-lg bg-white"
+          className="mb-4 flex h-12 flex-row items-center justify-between rounded-lg bg-white"
         >
           <div id="comment count" className="flex flex-row gap-2">
             <p className="ml-4 font-bold">댓글</p>
@@ -236,7 +235,7 @@ function PostSpecSection({ id }) {
         >
           <textarea
             id="comment input"
-            className="h-[6rem] w-[48rem] resize-none border-l border-r border-t border-placeholderGray bg-white focus:outline-none"
+            className="h-24 w-[48rem] resize-none border-x border-t border-placeholderGray bg-white focus:outline-none"
             placeholder="댓글을 입력하세요."
             value={commentText}
             onChange={handleCommentChange}

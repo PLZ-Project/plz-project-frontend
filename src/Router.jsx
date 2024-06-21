@@ -12,7 +12,8 @@ import { AuthRoute, NonAuthRoute } from './router/customRoutes';
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/main" element={<MainPage />} />
       <Route
         path="/login"
         element={(

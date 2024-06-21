@@ -10,10 +10,20 @@ export default defineConfig({
     // Proxy 설정
     proxy: {
       // 경로가 "/api" 로 시작하는 요청을 대상으로 proxy 설정
+      // '/api': {
+      //   target: 'https://www.plz-project.site',
+      //   changeOrigin: true,
+      //   secure: true,
+      //   ws: true
+      // }
       '/api': {
-        target: 'https://www.plz-project.site',
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: true,
+        ws: true
+      },
+      '/socket.io': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
         ws: true
       }
     }

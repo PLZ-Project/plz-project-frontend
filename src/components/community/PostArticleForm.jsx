@@ -1,19 +1,18 @@
-import { useQuill } from 'react-quilljs';
+import axios from 'axios';
+import { Delta } from 'quill/core';
 import 'quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
+import { useQuill } from 'react-quilljs';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useQueryClient } from '@tanstack/react-query';
-import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
-import { Delta } from 'quill/core';
+import Button from '../common/Button';
 
 function PostArticleForm({ isEditing, postData }) {
   const navigate = useNavigate();
   const [isEditMode, setIsEditMode] = useState(isEditing);
   const [title, setTitle] = useState(postData?.title || '');
   const [content, setContent] = useState(postData?.content || '');
-  const [selectedBoard, setSelectedBoard] = useState(5);
+  const [selectedBoard, setSelectedBoard] = useState(1);
   const boardInfo = localStorage.getItem('boardList');
   const boardList = JSON.parse(boardInfo);
   const handleBoardChange = (e) => {
