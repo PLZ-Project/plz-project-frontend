@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import useInputValidator from '../hooks/useInputValidator';
-import DynamicInput from '../components/common/DynamicInput';
-import Button from '../components/common/Button';
+import { useNavigate } from 'react-router-dom';
 import AuthLogo from '../../src/assets/authlogo.svg?react';
 import { apiInstanceWithoutToken } from '../api/apiInstance';
+import DynamicInput from '../components/common/DynamicInput';
+import useInputValidator from '../hooks/useInputValidator';
 
 function SignupPage() {
   const [email, isEmailValid, handleEmailChange] = useInputValidator('', 'email');
@@ -39,7 +37,7 @@ function SignupPage() {
         email,
         password
       });
-      // navigate('/');
+      // navigate('/main');
       console.log('회원가입 성공??');
       alert('회원가입이 완료되었습니다. 이메일을 인증해주세요.');
       navigate('/login');
@@ -49,11 +47,11 @@ function SignupPage() {
   };
 
   const handleGoMain = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   return (
-    <div className="relative flex h-screen items-center justify-center bg-test bg-cover">
+    <div className="relative flex h-screen items-center justify-center bg-auth bg-cover">
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo className="size-20" />
       </div>

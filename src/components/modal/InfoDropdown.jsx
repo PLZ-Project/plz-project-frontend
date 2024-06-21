@@ -1,8 +1,7 @@
-import { info } from 'autoprefixer';
+import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
 
 function InfoDropdown({ infoToggle }) {
@@ -11,7 +10,7 @@ function InfoDropdown({ infoToggle }) {
   const navigate = useNavigate();
 
   const goToMain = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   const goToMyPage = () => {

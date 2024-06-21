@@ -1,7 +1,7 @@
 import Logo from '@assets/logo.svg?react';
 import { useAtom } from 'jotai';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
 import AlertDropdown from '../modal/AlertDropdown';
 import InfoDropdown from '../modal/InfoDropdown';
@@ -39,7 +39,7 @@ function Header() {
   // const isLogin = useAtom(isLoginAtom);
 
   const goToMain = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   const goToLogin = () => {
@@ -54,25 +54,25 @@ function Header() {
   };
 
   return (
-    <header className="fixed z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
+    <header className="fixed z-50 flex h-[72px] w-full flex-row justify-between bg-black bg-opacity-80 px-8">
       <button id="logo" onClick={goToMain} aria-label="main button">
-        <Logo width={72} height={72} />
+        <Logo className="opacity-90" width={72} height={72} />
       </button>
       <div id="menu" className="flex flex-row gap-8">
         {/* 로그인 여부에 따라 조건부 렌더링 */}
         {/* 로그인 되어있을 때 */}
         {isLogin ? (
           <>
-            <button onClick={toggleDropdownClick} aria-label="alert button">
+            <button className="text-white font-GowunDodum" onClick={toggleDropdownClick} aria-label="alert button">
               알림
             </button>
-            <p className="flex items-center gap-2">
+            <p className="flex items-center gap-2 text-white text-[1.1rem] font-GowunDodum">
               <button
                 onClick={toggleInfoDropdownClick}
                 aria-label="logout button"
                 className="my-2 rounded-md px-2 hover:bg-gray-200"
               >
-                <span className="text-[#af8430]">{userNickName()}</span>
+                <span className="text-yellow-300">{userNickName()}</span>
               </button>
               님 안녕하세요.
             </p>

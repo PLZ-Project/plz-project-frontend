@@ -24,7 +24,7 @@ function PostArticleForm({ isEditing, postData }) {
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   const { quill, quillRef } = useQuill({
@@ -100,10 +100,10 @@ function PostArticleForm({ isEditing, postData }) {
       try {
         if (isEditMode) {
           await apiInstance.put(`/article/${postData.id}`, formData);
-          navigate('/');
+          navigate('/main');
         } else {
           await apiInstance.post('/article', formData);
-          navigate('/');
+          navigate('/main');
         }
       } catch (error) {
         console.error('Error uploading post:', error);

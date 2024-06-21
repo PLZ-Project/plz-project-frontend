@@ -32,11 +32,7 @@ function SearchBar() {
     mutate({ searchCondition, keyword });
   };
   return (
-<<<<<<< HEAD
     <div className="mb-4 flex h-[4.5rem] w-[64rem] flex-row items-center justify-between rounded-lg bg-white">
-=======
-    <div className="mb-4 flex h-[4.5rem] w-[60rem] flex-row items-center justify-between bg-slate-900 py-4">
->>>>>>> 36093aa9a8f89dad782219b7cc2c3209826781eb
       <div className="ml-4 flex flex-row gap-2">
         <button aria-label="whole article">
           <div className="flex flex-row items-center gap-2">

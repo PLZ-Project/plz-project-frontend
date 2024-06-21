@@ -21,7 +21,7 @@ function BoardList() {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(['articles'], data);
-      navigate('/');
+      navigate('/main');
       console.log(data);
       console.log('게시판 변경 성공');
     },

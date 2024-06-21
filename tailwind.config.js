@@ -13,11 +13,11 @@ export default {
         'BebasNeue': ['Bebas Neue', 'sans-serif']
       },
       backgroundImage: {
-        'default-img': "url('/src/assets/Dva.jpg')",
-        'board-img': "url('/src/assets/board.png')",
-        'board-img2': "url('/src/assets/board2.png')",
-        'summer-img': "url('/src/assets/summer.png')",
-        'auth-img': "url('/src/assets/auth.png')"
+        'auth': "url('./src/assets/auth.png')",
+        'landing': "url('./src/assets/landing.png')",
+        'board': "url('./src/assets/board.png')",
+        'board2': "url('./src/assets/board2.png')",
+        
       },
       colors: {
         mainBlue: '#324FE5',

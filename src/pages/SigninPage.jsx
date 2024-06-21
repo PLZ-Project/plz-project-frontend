@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
+import { useNavigate } from 'react-router-dom';
+import AuthLogo from '../../src/assets/authlogo.svg?react';
+import DiscordLogo from '../../src/assets/discord.svg?react';
+import GoogleLogo from '../../src/assets/google.svg?react';
+import { apiInstanceWithoutToken } from '../api/apiInstance';
+import { isLoginAtom } from '../atoms/isLoginAtom';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
-import { isLoginAtom } from '../atoms/isLoginAtom';
-import GoogleLogo from '../../src/assets/google.svg?react';
-import DiscordLogo from '../../src/assets/discord.svg?react';
-import AuthLogo from '../../src/assets/authlogo.svg?react';
-import { apiInstanceWithoutToken } from '../api/apiInstance';
 
 function SigninPage() {
   const navigate = useNavigate();
@@ -28,10 +28,10 @@ function SigninPage() {
           localStorage.setItem('refreshToken', refreshToken);
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
           setIsLogin(true);
-          navigate('/');
+          navigate('/main');
         });
       setIsLogin(true);
-      navigate('/');
+      navigate('/main');
     } catch (error) {
       console.error(error);
     }
@@ -41,10 +41,10 @@ function SigninPage() {
   };
 
   const handleGoMain = () => {
-    navigate('/');
+    navigate('/main');
   };
   return (
-    <div className="relative flex h-screen items-center justify-center bg-test bg-cover">
+    <div className="relative flex h-screen items-center justify-center bg-auth bg-cover">
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo className="size-20" />
       </div>

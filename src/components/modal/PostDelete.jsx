@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { apiInstance } from '../../api/apiInstance';
 import { useNavigate } from 'react-router-dom';
+import { apiInstance } from '../../api/apiInstance';
 
 function PostDelete({ toggleModal, postId }) {
   const modalRef = useRef(null);
@@ -23,7 +23,7 @@ function PostDelete({ toggleModal, postId }) {
   const deletePost = async () => {
     try {
       await apiInstance.delete(`/article/${postId}`);
-      navigate('/');
+      navigate('/main');
     } catch (error) {
       console.error('Error deleting post:', error);
     }
