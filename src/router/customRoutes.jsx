@@ -6,7 +6,7 @@ function getAccessToken() {
   return accessToken;
 }
 
-// 로그인이 되어 있지 않은 상태에서만 접근 가능한 페이지
+// 로그인이 되어 있지 않으면 접근 불가능한 페이지
 function AuthRoute({ children }) {
   const accessToken = getAccessToken();
   if (!accessToken) {
@@ -16,7 +16,7 @@ function AuthRoute({ children }) {
   return children;
 }
 
-// 로그인이 되어 있는 상태에서만 접근 가능한 페이지
+// 토큰이 있는 상태론 접근 불가능한 페이지
 function NonAuthRoute({ children }) {
   const accessToken = getAccessToken();
   if (accessToken) {

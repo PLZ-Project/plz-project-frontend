@@ -76,7 +76,7 @@ function MyInfo({ userInfo }) {
   };
 
   return (
-    <div className="flex h-[30rem] w-[52rem] flex-row bg-white">
+    <div className="flex h-[30rem] w-[52rem] flex-row rounded-lg bg-white">
       <div className="my-2 flex w-[7.5rem] items-center justify-center border-r-2">나의 정보</div>
       <div className="ml-4 flex flex-col">
         <div id="email" className="flex h-40 w-[40rem] flex-row items-center">

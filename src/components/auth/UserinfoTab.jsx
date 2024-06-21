@@ -2,10 +2,11 @@ import { useState } from 'react';
 import MyArticle from './MyArticle';
 import MyComment from './MyComment';
 import MyInfo from './MyInfo';
+import { useAtom } from 'jotai';
+import { selectedTabAtom } from '../../atoms/selectedTabAtom';
 
 function UserinfoTab() {
-  const [selectedTab, setSelectedTab] = useState('article');
-
+  const [selectedTab, setSelectedTab] = useAtom(selectedTabAtom);
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
@@ -19,9 +20,9 @@ function UserinfoTab() {
 
   return (
     <div>
-      <div className="mb-2 flex h-[4.5rem] justify-end gap-2 rounded-md bg-white">
+      <div className="mb-4 flex h-[4.5rem] items-center justify-end gap-2 rounded-lg bg-white">
         <button
-          className={`mt-4 rounded-t-md px-4 py-2 ${
+          className={`h-12 rounded-md px-4 ${
             selectedTab === 'article' ? 'bg-mainBlue text-white' : 'bg-gray-200 text-gray-600'
           }`}
           onClick={() => handleTabClick('article')}
@@ -29,7 +30,7 @@ function UserinfoTab() {
           내 게시글
         </button>
         <button
-          className={`mt-4 rounded-t-md px-4 py-2 ${
+          className={`h-12 rounded-md px-4 ${
             selectedTab === 'comment' ? 'bg-mainBlue text-white' : 'bg-gray-200 text-gray-600'
           }`}
           onClick={() => handleTabClick('comment')}
@@ -37,7 +38,7 @@ function UserinfoTab() {
           내 댓글
         </button>
         <button
-          className={`mr-4 mt-4 rounded-t-md px-4 py-2 ${
+          className={`mr-4 h-12 rounded-md px-4 ${
             selectedTab === 'info' ? 'bg-mainBlue text-white' : 'bg-gray-200 text-gray-600'
           }`}
           onClick={() => handleTabClick('info')}

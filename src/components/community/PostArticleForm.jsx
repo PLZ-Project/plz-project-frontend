@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
+import { Delta } from 'quill/core';
 
 function PostArticleForm({ isEditing, postData }) {
   const navigate = useNavigate();
@@ -32,10 +33,12 @@ function PostArticleForm({ isEditing, postData }) {
       toolbar: [[{ header: [1, 2, false] }], ['image']]
     }
   });
+  console.log(postData);
 
   useEffect(() => {
     if (isEditMode && quill) {
-      quill.setContents(JSON.parse(postData.content));
+      const delta = new Delta(JSON.parse(postData.content));
+      quill.setContents(delta);
       setTitle(postData.title);
       setSelectedBoard(postData.boardId);
     }
@@ -89,15 +92,16 @@ function PostArticleForm({ isEditing, postData }) {
 
   const handleSubmit = async () => {
     if (quill) {
-      const content = quill.root.innerHTML;
+      const content = quill.getContents();
       const formData = new URLSearchParams();
-      formData.append('content', content);
+      formData.append('content', JSON.stringify(content));
       formData.append('title', title);
       formData.append('boardId', selectedBoard);
 
       try {
         if (isEditMode) {
-          await apiInstance.put(`/posts/${postData.id}`, formData);
+          await apiInstance.put(`/article/${postData.id}`, formData);
+          navigate('/');
         } else {
           await apiInstance.post('/article', formData);
           navigate('/');
