@@ -42,14 +42,24 @@ function AlertDropdown({ toggleDropdown }) {
     }
   };
 
-  const handleURLClick = (id) => {
-    navigate(`/post/${id}`);
+  const handleURLClick = async (id, articleId) => {
+    await apiInstance.delete(`/notification/${id}`);
+
+    fetchNotifications();
+
+    navigate(`/post/${articleId}`);
   };
 
-  const clickOutside = useCallback((e) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      toggleDropdown();
-    }
+  useEffect(() => {
+    const clickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        toggleDropdown(e);
+      }
+    };
+    document.addEventListener('click', clickOutside);
+    return () => {
+      document.removeEventListener('click', clickOutside);
+    };
   }, [dropdownRef, toggleDropdown]);
 
   useEffect(() => {
@@ -78,7 +88,7 @@ function AlertDropdown({ toggleDropdown }) {
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error loading notifications.</p>}
         {!isLoading && !isError && notifications.map((notification, index) => (
-          <div key={index} onClick={() => handleURLClick(notification.articleId)} className="notification-item">
+          <div key={index} onClick={() => handleURLClick(notification.id, notification.articleId)} className="notification-item">
             {writeContent(notification)}
           </div>
         ))}
