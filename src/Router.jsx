@@ -7,11 +7,13 @@ import UserinfoPage from './pages/UserinfoPage';
 import PostSpecPage from './pages/PostSpecPage';
 import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
+import LandingPage from './pages/LandingPage';
 
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/main" element={<MainPage />} />
       <Route
         path="/login"
         element={

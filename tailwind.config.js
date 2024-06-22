@@ -3,9 +3,19 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        BlackHanSans: ['Black Han Sans', 'sans-serif'],
+        NotoSansKR: ['Noto Sans KR', 'sans-serif'],
+        IBMPlexSansKR: ['IBM Plex Sans KR', 'sans-serif'],
+        RobotoCondensed: ['Roboto Condensed', 'sans-serif'],
+        GowunDodum: ['Gowun Dodum', 'sans-serif'],
+        BebasNeue: ['Bebas Neue', 'sans-serif']
+      },
       backgroundImage: {
-        'default-img': "url('/src/assets/Dva.jpg')",
-        'auth-img': "url('/src/assets/auth.png')"
+        auth: "url('./src/assets/auth.png')",
+        landing: "url('./src/assets/landing.png')",
+        board: "url('./src/assets/board.png')",
+        board2: "url('./src/assets/board2.png')"
       },
       colors: {
         mainBlue: '#324FE5',
