@@ -1,26 +1,76 @@
-import { useEffect, useRef } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { connectSocket } from '../../../utils/socket';
+import { apiInstance, apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function AlertDropdown({ toggleDropdown }) {
-  // 헤더의 알림 버튼을 누르면 알림 목록과 채팅 목록을 보여준다.
-  // 드롭다운 메뉴의 구성은 flex-col로 위에는 알림 목록, 아래는 채팅 목록을 보여준다.
-  // 각각의 목록은 위아래 스크롤이 가능하지만, 스크롤바는 보이지 않는다.
-  // 헤더를 기준으로 포지션은 absolute이다.
-  // 이 컴포넌트의 크기는 가로 * 세로 => 20rem * 30rem이다.
+  const navigate = useNavigate();
   const dropdownRef = useRef(null);
-  console.log('dropdownRef', dropdownRef);
-  // 바깥을 클릭하면 드롭다운 메뉴가 사라진다.
-  useEffect(() => {
-    const clickOutside = (e) => {
+  const [notifications, setNotifications] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const fetchNotifications = async () => {
+    try {
+      setIsLoading(true);
+      const userId = JSON.parse(localStorage.getItem('userInfo')).id;
+      const response = await apiInstanceWithoutToken.get(`/notification/${userId}`);
+      setNotifications(response.data.notifications);
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
+  const title = (title) => {
+    const name = title.length < 5 ? title : `${title.slice(0, 5)}...`;
+    return name;
+  };
+
+  const writeContent = (notification) => {
+    switch (notification.type) {
+      case 'comment':
+        return `${title(notification.Article.title)}에 댓글이 달렸습니다.`;
+      case 'tag':
+        return `${title(notification.Article.title)}에 태그되셨습니다.`;
+      case 'like':
+        return `${title(notification.Article.title)}에 좋아요가 눌렸습니다.`;
+      default:
+        return '';
+    }
+  };
+
+  const handleURLClick = (id) => {
+    navigate(`/post/${id}`);
+  };
+
+  const clickOutside = useCallback(
+    (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         toggleDropdown();
       }
-    };
-    console.log('click');
-    document.addEventListener('click', clickOutside);
+    },
+    [dropdownRef, toggleDropdown]
+  );
+
+  useEffect(() => {
+    const socket = connectSocket();
+    socket.on('new_notification', (data) => {
+      fetchNotifications();
+    });
+
+    fetchNotifications();
+
     return () => {
-      document.removeEventListener('click', clickOutside);
+      socket.off('new_notification');
     };
-  }, [dropdownRef, toggleDropdown]);
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   return (
     <div
@@ -28,10 +78,19 @@ function AlertDropdown({ toggleDropdown }) {
       className="absolute right-2 top-20 z-[100] flex h-[30rem] w-80 flex-col bg-black bg-opacity-50"
     >
       <div id="alertList" className="h-60 overflow-hidden text-white">
-        알림 컴포넌트가 들어갈 자리.
-      </div>
-      <div id="chattingList" className="h-60 overflow-hidden text-white">
-        채팅 컴포넌트가 들어갈 자리.
+        {isLoading && <p>Loading...</p>}
+        {isError && <p>Error loading notifications.</p>}
+        {!isLoading &&
+          !isError &&
+          notifications.map((notification, index) => (
+            <div
+              key={index}
+              onClick={() => handleURLClick(notification.articleId)}
+              className="notification-item"
+            >
+              {writeContent(notification)}
+            </div>
+          ))}
       </div>
     </div>
   );
