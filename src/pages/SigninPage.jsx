@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
+import { useEffect } from 'react';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
 import { isLoginAtom } from '../atoms/isLoginAtom';
@@ -14,6 +15,20 @@ function SigninPage() {
   const navigate = useNavigate();
   const [email, , handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
+
+  useEffect(() => {
+    const fetchBoardList = async () => {
+      try {
+        await apiInstanceWithoutToken.get('/board/list').then((response) => {
+          console.log('게시판 리스트', response.data);
+          localStorage.setItem('boardList', JSON.stringify(response.data));
+        });
+      } catch (error) {
+        console.error('Error fetching board list:', error);
+      }
+    };
+    fetchBoardList();
+  }, []);
 
   const setIsLogin = useSetAtom(isLoginAtom);
   const handleLogin = async (e) => {
@@ -96,7 +111,10 @@ function SigninPage() {
     navigate('/');
   };
   return (
-    <div className="relative flex h-screen items-center justify-center bg-auth-img object-cover">
+    <div
+      className=" relative flex h-screen items-center justify-center object-cover"
+      style={{ backgroundImage: "url('./src/assets/auth.webp" }}
+    >
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo />
       </div>

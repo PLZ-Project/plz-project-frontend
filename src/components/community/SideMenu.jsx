@@ -18,24 +18,26 @@ function SideMenu() {
   return (
     <div className="flex flex-col">
       {isLogin && <Profile />}
-      <div className="bg-sky flex h-[6.5rem] w-[20.5rem] items-center justify-center border-y border-placeholderGray">
-        {isLogin === true ? (
-          <button
-            onClick={handlePostButtonClick}
-            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
-          >
-            글쓰기
-          </button>
-        ) : (
-          <button
-            onClick={handleLoginButtonClick}
-            className="h-[3.5rem] w-[10rem] rounded-lg bg-mainBlue text-white"
-          >
-            로그인
-          </button>
-        )}
+      <div className="mt-5 flex flex-col items-center justify-center rounded-lg bg-white bg-opacity-60">
+        <div className=" flex h-[6.5rem] w-80 items-center justify-center">
+          {isLogin === true ? (
+            <button
+              onClick={handlePostButtonClick}
+              className="font-GowunDodum h-16 w-72 rounded-lg bg-yel bg-opacity-85 text-[1.2rem] font-medium text-white"
+            >
+              글쓰기
+            </button>
+          ) : (
+            <button
+              onClick={handleLoginButtonClick}
+              className="h-16 w-40 rounded-lg bg-yel text-white"
+            >
+              로그인
+            </button>
+          )}
+        </div>
+        <BoardList />
       </div>
-      <BoardList />
     </div>
   );
 }

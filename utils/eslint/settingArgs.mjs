@@ -48,6 +48,7 @@ const settingArgs = {
       }
     ],
     'no-shadow': 0,
+    'jsx-a11y/img-redundant-alt': 0,
     'import/no-unresolved': 0,
     'no-useless-return': 0,
     'react/prop-types': 0,
@@ -69,6 +70,7 @@ const settingArgs = {
     'import/prefer-default-export': 0,
     'react/jsx-one-expression-per-line': 0,
     'import/no-named-as-default-member': 0,
+    'tailwindcss/enforces-negative-arbitrary-values': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'tailwindcss/no-contradicting-classname': 0,

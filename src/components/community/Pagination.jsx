@@ -13,10 +13,10 @@ import { selectedBoardIdAtom } from '../../atoms/selectBoardId';
 import { articlesAtom } from '../../atoms/articlesAtom';
 // import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
-function Pagination() {
-  const [postDatas, setPostDatas] = useAtom(articlesAtom);
+function Pagination({ postDatas }) {
+  // const [postDatas, setPostDatas] = useAtom(articlesAtom);
 
-  const postCount = postDatas.count;
+  const postCount = postDatas.articles.count;
   const postPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(postCount / postPerPage);
@@ -24,7 +24,7 @@ function Pagination() {
   // 현재 페이지에서 보여줄 포스트들
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPostArr = postDatas.rows || [];
+  const currentPostArr = postDatas.articles.rows || [];
   const currentPosts = currentPostArr.slice(indexOfFirstPost, indexOfLastPost);
   // articleData.rows가 없다면, currentPosts는 없다.
 
@@ -63,7 +63,7 @@ function Pagination() {
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
-            className={`rounded-md border px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+            className={`rounded-md border px-4 py-2 ${currentPage === index + 1 ? 'bg-yel text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
           >
             {index + 1}
           </button>

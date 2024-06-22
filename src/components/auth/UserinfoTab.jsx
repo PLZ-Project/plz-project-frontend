@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useAtom } from 'jotai';
 import MyArticle from './MyArticle';
 import MyComment from './MyComment';
 import MyInfo from './MyInfo';
-import { useAtom } from 'jotai';
 import { selectedTabAtom } from '../../atoms/selectedTabAtom';
 
 function UserinfoTab() {

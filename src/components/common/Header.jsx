@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
 import AlertDropdown from '../modal/AlertDropdown';
 import InfoDropdown from '../modal/InfoDropdown';
+import { userNickName } from '../../../utils/userNickname';
 
 function Header() {
   // 헤더의 위치는 상단에 고정되어 있어야 한다.
@@ -46,12 +47,12 @@ function Header() {
     navigate('/login');
   };
 
-  const userNickName = () => {
-    const regex = /^(.*shibaDog\d{0,4}).*/;
-    const match = nickname.match(regex);
-    const name = match ? match[1] : nickname.replace(/^\d{0,4}/, '').slice(0, 12);
-    return name;
-  };
+  // const userNickName = (nickname) => {
+  //   const regex = /^(.*shibaDog\d{0,4}).*/;
+  //   const match = nickname.match(regex);
+  //   const name = match ? match[1] : nickname.replace(/^\d{0,4}/, '').slice(0, 12);
+  //   return name;
+  // };
 
   return (
     <header className="fixed z-50 flex h-[72px] w-full flex-row justify-between bg-white px-8">
@@ -72,7 +73,7 @@ function Header() {
                 aria-label="logout button"
                 className="my-2 rounded-md px-2 hover:bg-gray-200"
               >
-                <span className="text-[#af8430]">{userNickName()}</span>
+                <span className="text-[#af8430]">{userNickName(nickname)}</span>
               </button>
               님 안녕하세요.
             </p>

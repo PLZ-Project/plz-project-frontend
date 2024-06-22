@@ -13,7 +13,10 @@ function LandingPage() {
     navigate('/main');
   };
   return (
-    <div className="bg-landing flex h-svh w-svw items-center bg-cover bg-left">
+    <div
+      className="flex h-svh w-svw items-center bg-cover bg-left"
+      style={{ backgroundImage: "url('./src/assets/landing.webp" }}
+    >
       <div className="-mt-4 ml-48 flex flex-col justify-center">
         <div className="flex flex-col items-start">
           <div className="absolute left-40 top-[19rem] size-20 rounded-[10rem] bg-[#4d0101]"></div>

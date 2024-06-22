@@ -51,7 +51,10 @@ function SignupPage() {
   };
 
   return (
-    <div className="relative flex h-screen items-center justify-center bg-auth-img object-cover">
+    <div
+      className=" relative flex h-screen items-center justify-center object-cover"
+      style={{ backgroundImage: "url('./src/assets/auth.webp" }}
+    >
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
         <AuthLogo />
       </div>

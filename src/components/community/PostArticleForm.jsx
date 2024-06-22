@@ -3,21 +3,19 @@ import 'quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useQueryClient } from '@tanstack/react-query';
+import { Delta } from 'quill/core';
 import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
-import { Delta } from 'quill/core';
 
 function PostArticleForm({ isEditing, postData }) {
   const navigate = useNavigate();
   const [isEditMode, setIsEditMode] = useState(isEditing);
   const [title, setTitle] = useState(postData?.title || '');
-  const [content, setContent] = useState(postData?.content || '');
+  // const [content, setContent] = useState(postData?.content || '');
   const [selectedBoard, setSelectedBoard] = useState(5);
   const boardInfo = localStorage.getItem('boardList');
   const boardList = JSON.parse(boardInfo);
   const handleBoardChange = (e) => {
-    console.log(e.target.value);
     setSelectedBoard(e.target.value);
   };
   const handleTitleChange = (e) => {
@@ -25,7 +23,7 @@ function PostArticleForm({ isEditing, postData }) {
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   const { quill, quillRef } = useQuill({
@@ -33,7 +31,6 @@ function PostArticleForm({ isEditing, postData }) {
       toolbar: [[{ header: [1, 2, false] }], ['image']]
     }
   });
-  console.log(postData);
 
   useEffect(() => {
     if (isEditMode && quill) {
@@ -101,10 +98,10 @@ function PostArticleForm({ isEditing, postData }) {
       try {
         if (isEditMode) {
           await apiInstance.put(`/article/${postData.id}`, formData);
-          navigate('/');
+          navigate('/main');
         } else {
           await apiInstance.post('/article', formData);
-          navigate('/');
+          navigate('/main');
         }
       } catch (error) {
         console.error('Error uploading post:', error);
@@ -138,18 +135,26 @@ function PostArticleForm({ isEditing, postData }) {
         <div ref={quillRef}></div>
       </div>
       <div className="mt-11 flex h-[4.5rem] flex-row justify-between">
-        {/* <button
-          className="h-9 w-[10.25rem] rounded-md border border-mainBlue"
+        <button
+          className="h-9 w-[10.25rem] rounded-md border bg-placeholderGray text-white"
           aria-label="cancel button"
+          onClick={handleCancel}
         >
           취소
-        </button> */}
-        <Button width={10.25} height={2.25} onClick={handleCancel}>
+        </button>
+        <button
+          className="h-9 w-[10.25rem] rounded-md border bg-yel text-white"
+          aria-label="submit button"
+          onClick={handleSubmit}
+        >
+          등록
+        </button>
+        {/* <Button width={10.25} height={2} onClick={handleCancel}>
           취소
         </Button>
-        <Button width={10.25} height={2.25} type="filled" onClick={handleSubmit}>
+        <Button width={10.25} height={2} type="filled" onClick={handleSubmit}>
           등록
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { FaSave, FaTimesCircle } from 'react-icons/fa';
 import PostDelete from '../modal/PostDelete';
 import { apiInstance } from '../../api/apiInstance';
 import useCommentActions from '../../Rmutate/commentMutate';
+import { userNickName } from '../../../utils/userNickname';
 
 function PostSpecSection({ id }) {
   const queryClient = useQueryClient();
@@ -116,13 +117,6 @@ function PostSpecSection({ id }) {
   const toggleDeleteModal = () => {
     setIsDeleteModalOpen((prev) => !prev);
   };
-
-  const userNickName = (nickname) => {
-    const regex = /^(.*shibaDog\d{0,4}).*/;
-    const match = nickname.match(regex);
-    const name = match ? match[1] : nickname.replace(/^\d{0,4}/, '').slice(0, 12);
-    return name;
-  };
   return (
     <div className="flex w-[52rem] flex-col rounded-lg">
       <div>
@@ -159,7 +153,7 @@ function PostSpecSection({ id }) {
       </div>
       <div
         id="contents"
-        className="min-h-96 rounded-lg bg-white px-4"
+        className="min-h-96 rounded-t-lg bg-white px-4"
         dangerouslySetInnerHTML={{ __html: contents }}
       />
       <div id="likeBtn" className="mb-4 flex h-12 flex-row justify-center rounded-b-lg bg-white">
@@ -205,7 +199,7 @@ function PostSpecSection({ id }) {
             </button>
           </div>
         </div>
-        <div id="comment list" className="mb-8 flex w-[52rem] justify-center">
+        <div id="comment list" className="mb-8 flex w-[52rem] flex-col justify-center">
           {commentData.comments.rows.map((comment) => (
             <div
               key={comment.id}

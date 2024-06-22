@@ -1,13 +1,15 @@
 import { FaCircle, FaFire, FaSearch } from 'react-icons/fa';
-import { apiInstanceWithoutToken } from '../../api/apiInstance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { apiInstanceWithoutToken } from '../../api/apiInstance';
+import { selectedBoardIdAtom } from '../../atoms/selectBoardId';
 
 function SearchBar() {
   const [searchCondition, setSearchCondition] = useState('title');
   const [keyword, setKeyword] = useState('');
-
+  const [boardId, setIsBoardId] = useAtom(selectedBoardIdAtom);
   const handleOnChange = (e) => {
     setKeyword(e.target.value);
   };
@@ -22,12 +24,16 @@ function SearchBar() {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(['articles'], data);
+      queryClient.setQueryData(['articles', boardId], data);
     },
     onError: (err) => {
       console.error('검색 실패:', err);
     }
   });
+
+  const onClickWhole = () => {
+    setIsBoardId('');
+  };
 
   const onClickSearch = () => {
     mutate({ searchCondition, keyword });
@@ -36,16 +42,10 @@ function SearchBar() {
     <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between rounded-lg bg-white">
       <div className="ml-4 flex flex-row gap-2">
         <button aria-label="whole article">
-          <div className="flex flex-row items-center gap-2">
+          <button className="flex flex-row items-center gap-2" onClick={onClickWhole}>
             <FaCircle className="text-gray-500" />
             <p className="text-gray-500">전체</p>
-          </div>
-        </button>
-        <button aria-label="hot article">
-          <div className="flex flex-row items-center gap-2">
-            <FaFire className="text-gray-500" />
-            <p className="text-gray-500">인기</p>
-          </div>
+          </button>
         </button>
       </div>
       <div className="mr-4 flex flex-row gap-4">
