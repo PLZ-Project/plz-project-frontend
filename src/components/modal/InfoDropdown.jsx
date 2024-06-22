@@ -3,6 +3,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isLoginAtom } from '../../atoms/isLoginAtom';
+import { connectSocket } from '../../../utils/socket';
 
 function InfoDropdown({ infoToggle }) {
   const infoDropdownRef = useRef(null);
@@ -46,6 +47,8 @@ function InfoDropdown({ infoToggle }) {
           setIsLogin(false);
           navigate('/login');
         });
+
+      connectSocket().disconnect();
 
       // 토글 끄기
       infoToggle();

@@ -1,5 +1,7 @@
 import { useSetAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { useEffect } from 'react';
 import AuthLogo from '../../src/assets/authlogo.svg?react';
 import DiscordLogo from '../../src/assets/discord.svg?react';
 import GoogleLogo from '../../src/assets/google.svg?react';
@@ -7,6 +9,7 @@ import { apiInstanceWithoutToken } from '../api/apiInstance';
 import { isLoginAtom } from '../atoms/isLoginAtom';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
+import { connectSocket } from '../../utils/socket';
 
 function SigninPage() {
   const navigate = useNavigate();
@@ -14,6 +17,31 @@ function SigninPage() {
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
 
   const setIsLogin = useSetAtom(isLoginAtom);
+
+  useEffect(() => {
+    const login = async () => {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const responseDTO = urlParams.get('responseDTO');
+
+      if (responseDTO) {
+        const { accessToken, refreshToken, userInfo } = JSON.parse(responseDTO);
+
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+        const socket = connectSocket();
+        await socket.emit('join_room', userInfo.id);
+
+        setIsLogin(true);
+        navigate('/main');
+      }
+    };
+
+    login();
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -22,11 +50,15 @@ function SigninPage() {
           email,
           password
         })
-        .then((response) => {
+        .then(async (response) => {
           const { accessToken, refreshToken, userInfo } = response.data;
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+          const socket = connectSocket();
+          await socket.emit('join_room', userInfo.id);
+
           setIsLogin(true);
           navigate('/main');
         });
@@ -43,6 +75,42 @@ function SigninPage() {
   const handleGoMain = () => {
     navigate('/main');
   };
+
+  const handleDiscordLogin = async () => {
+    try {
+      window.location.href = 'https://plz-project.site/api/auth/discord';
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleLoginSuccess = async (credentialResponse) => {
+    try {
+      await apiInstanceWithoutToken.post('/auth/google/callback', {
+        tokenId: credentialResponse.credential
+      }).then(async (response) => {
+        const { accessToken, refreshToken, userInfo } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+        const socket = connectSocket();
+        await socket.emit('join_room', userInfo.id);
+
+        setIsLogin(true);
+        navigate('/main');
+      });
+      setIsLogin(true);
+      navigate('/main');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleLoginFailure = (error) => {
+    console.error(error);
+  };
+
   return (
     <div className="relative flex h-screen items-center justify-center bg-auth bg-cover">
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
@@ -80,10 +148,18 @@ function SigninPage() {
           </form>
           <div className="mt-6 flex flex-row justify-center gap-6">
             <button aria-label="구글 로그인">
-              <GoogleLogo />
+              <GoogleOAuthProvider clientId="523405884505-gg96ji9js5qb6tkuq906ckhcnqre737e.apps.googleusercontent.com">
+                <GoogleLogin
+                  onSuccess={handleLoginSuccess}
+                  onError={handleLoginFailure}
+                  text="구글로 로그인"
+                >
+                  <GoogleLogo />
+                </GoogleLogin>
+              </GoogleOAuthProvider>
             </button>
             <button aria-label="디스코드 로그인">
-              <DiscordLogo />
+              <DiscordLogo onClick={handleDiscordLogin} />
             </button>
           </div>
           <div className="mt-5 flex items-center justify-center">

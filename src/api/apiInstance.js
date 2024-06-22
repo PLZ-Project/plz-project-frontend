@@ -11,17 +11,13 @@ export const apiInstanceWithoutToken = axios.create(
   }
 );
 
-export const apiInstance = axios.create(
-  {
-    baseURL: '/api',
-    withCredentials: false
-  },
-  {
-    headers: {
-      'Content-Type': 'application/json'
-    }
+export const apiInstance = axios.create({
+  baseURL: '/api',
+  withCredentials: false, // 인증 정보(쿠키 등)을 요청에 포함할지 여부
+  headers: {
+    'Content-Type': 'application/json' // 요청 헤더 설정
   }
-);
+});
 
 // 로컬스토리지에 저장되어있는 access_token, refresh_token을 가져와서 헤더에 넣어주는 interceptor
 apiInstance.interceptors.request.use(

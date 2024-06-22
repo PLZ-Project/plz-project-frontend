@@ -68,6 +68,7 @@ const settingArgs = {
     'react/no-array-index-key': 0,
     'react/jsx-no-useless-fragment': 0,
     'tailwindcss/classnames-order': 0,
+    'react/jsx-no-useless-fragment': 0,
     'import/no-extraneous-dependencies': 0,
     'tailwindcss/no-custom-classname': 0,
     'import/prefer-default-export': 0,

@@ -32,7 +32,6 @@ function PostArticleForm({ isEditing, postData }) {
       toolbar: [[{ header: [1, 2, false] }], ['image']]
     }
   });
-  console.log(postData);
 
   useEffect(() => {
     if (isEditMode && quill) {
@@ -92,17 +91,15 @@ function PostArticleForm({ isEditing, postData }) {
   const handleSubmit = async () => {
     if (quill) {
       const content = quill.getContents();
-      const formData = new URLSearchParams();
-      formData.append('content', JSON.stringify(content));
-      formData.append('title', title);
-      formData.append('boardId', selectedBoard);
+
+      const data = { title, content: JSON.stringify(content), boardId: selectedBoard };
 
       try {
         if (isEditMode) {
-          await apiInstance.put(`/article/${postData.id}`, formData);
+          await apiInstance.put(`/article/${postData.id}`, data);
           navigate('/main');
         } else {
-          await apiInstance.post('/article', formData);
+          await apiInstance.post('/article', data);
           navigate('/main');
         }
       } catch (error) {

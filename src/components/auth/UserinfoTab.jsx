@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useAtom } from 'jotai';
 import MyArticle from './MyArticle';
 import MyComment from './MyComment';
 import MyInfo from './MyInfo';
-import { useAtom } from 'jotai';
 import { selectedTabAtom } from '../../atoms/selectedTabAtom';
 
 function UserinfoTab() {
@@ -47,7 +47,7 @@ function UserinfoTab() {
         </button>
       </div>
       <div>
-        {selectedTab === 'article' ? <MyArticle /> : null}
+        {selectedTab === 'article' ? <MyArticle userinfo={userinfo} /> : null}
         {selectedTab === 'comment' ? <MyComment /> : null}
         {selectedTab === 'info' ? <MyInfo userInfo={userinfo} /> : null}
       </div>

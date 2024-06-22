@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
-
-const socket = io('/socket.io');
+import { connectSocket } from '../../../utils/socket';
+import { apiInstance, apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function AlertDropdown({ toggleDropdown }) {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ function AlertDropdown({ toggleDropdown }) {
     try {
       setIsLoading(true);
       const userId = JSON.parse(localStorage.getItem('userInfo')).id;
-      const response = await axios.get(`/api/notification/${userId}`);
+      const response = await apiInstanceWithoutToken.get(`/notification/${userId}`);
       setNotifications(response.data.notifications);
       setIsLoading(false);
     } catch (error) {
@@ -36,6 +35,8 @@ function AlertDropdown({ toggleDropdown }) {
         return `${title(notification.Article.title)}에 댓글이 달렸습니다.`;
       case 'tag':
         return `${title(notification.Article.title)}에 태그되셨습니다.`;
+      case 'like':
+        return `${title(notification.Article.title)}에 좋아요가 눌렸습니다.`;
       default:
         return '';
     }
@@ -52,30 +53,12 @@ function AlertDropdown({ toggleDropdown }) {
   }, [dropdownRef, toggleDropdown]);
 
   useEffect(() => {
-    document.addEventListener('click', clickOutside);
-    return () => {
-      document.removeEventListener('click', clickOutside);
-    };
-  }, [clickOutside]);
-
-  useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem('userInfo')).id;
-    socket.emit('join_room', `user_${userId}`);
-
-    socket.on('connect', () => {
-      console.log('Socket connected');
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
+    const socket = connectSocket();
     socket.on('new_notification', (data) => {
-      console.log('새로운 알림이 도착했습니다:', data);
-      fetchNotifications(); // 새로운 알림을 받으면 알림 목록을 다시 가져옵니다.
+      fetchNotifications();
     });
+
+    fetchNotifications();
 
     return () => {
       socket.off('new_notification');
@@ -83,7 +66,7 @@ function AlertDropdown({ toggleDropdown }) {
   }, []);
 
   useEffect(() => {
-    fetchNotifications(); // 컴포넌트가 마운트되면 알림 목록을 가져옵니다.
+    fetchNotifications();
   }, []);
 
   return (

@@ -1,5 +1,4 @@
-import { Cookies } from 'react-cookie';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 function getAccessToken() {
   const accessToken = localStorage.getItem('accessToken');
@@ -21,7 +20,7 @@ function NonAuthRoute({ children }) {
   const accessToken = getAccessToken();
   if (accessToken) {
     alert('이미 로그인한 상태입니다.');
-    return <Navigate to="/" replace />;
+    return <Navigate to="/main" replace />;
   }
   return children;
 }

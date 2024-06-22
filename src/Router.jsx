@@ -8,7 +8,6 @@ import PostSpecPage from './pages/PostSpecPage';
 import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
 import UserinfoPage from './pages/UserinfoPage';
-import TestPage from './pages/testPage';
 import { AuthRoute, NonAuthRoute } from './router/customRoutes';
 
 function Router() {
@@ -58,15 +57,6 @@ function Router() {
         )}
       />
       <Route path="/post/:id" element={<PostSpecPage />} />
-
-      <Route
-        path="/test/:id"
-        element={(
-          <AuthRoute>
-            <TestPage />
-          </AuthRoute>
-        )}
-      />
     </Routes>
   );
 }

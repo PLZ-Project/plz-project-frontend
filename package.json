@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "clean-cache": "rm -rf .vite",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@tanstack/query-sync-storage-persister": "^5.45.0",
     "@tanstack/react-query": "^5.45.1",
     "@tanstack/react-query-devtools": "^5.45.1",
@@ -27,6 +29,7 @@
     "react-quilljs": "^2.0.0",
     "react-router-dom": "^6.23.1",
     "react-transition-group": "^4.4.5",
+    "sanitize-html": "^2.13.0",
     "socket.io-client": "^4.7.5",
     "vite": "^5.2.0"
   },
