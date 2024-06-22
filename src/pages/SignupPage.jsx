@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import useInputValidator from '../hooks/useInputValidator';
 import DynamicInput from '../components/common/DynamicInput';
-import Button from '../components/common/Button';
 import AuthLogo from '../../src/assets/authlogo.svg?react';
 import { apiInstanceWithoutToken } from '../api/apiInstance';
 
@@ -98,7 +96,8 @@ function SignupPage() {
             )}
             <button
               onClick={handleSignupSubmit}
-              className="text-white' h-12 w-[20.625rem] rounded-lg bg-mainBlue text-white"
+              className={`text-white' h-12 w-[20.625rem] rounded-lg ${!isPasswordCheckValid ? 'bg-placeholderGray' : 'bg-mainBlue'} text-white`}
+              disabled={!isPasswordCheckValid}
             >
               회원가입
             </button>
