@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
+import axios from 'axios';
 import { apiInstance } from '../../api/apiInstance';
 import ChangePW from '../modal/ChangePW';
-import axios from 'axios';
 
 function MyInfo({ userInfo }) {
-  const email = userInfo.email;
+  const { email } = userInfo;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -45,6 +45,7 @@ function MyInfo({ userInfo }) {
   // 닉네임 취소 버튼을 누르면, 닉네임을 변경하기 전으로 돌아가야 한다. 현재 이 부분에서 에러 발생.
   const handleCancelEditNickname = () => {
     setIsEditNickname(false);
+    setNickname(userInfo.nickname);
     setNewNickname(userInfo.nickname);
   };
 
@@ -121,7 +122,7 @@ function MyInfo({ userInfo }) {
           ) : (
             <div className="flex items-center">
               <input
-                defaultValue={nickname}
+                defaultValue={userInfo.nickname}
                 disabled
                 className="ml-4 w-[25rem] rounded-md border bg-placeholderGray text-black"
               />
@@ -129,7 +130,7 @@ function MyInfo({ userInfo }) {
                 className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
                 onClick={() => setIsEditNickname(true)}
               >
-                수정
+                변경
               </button>
             </div>
           )}
