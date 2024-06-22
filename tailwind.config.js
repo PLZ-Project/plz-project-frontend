@@ -12,10 +12,10 @@ export default {
         BebasNeue: ['Bebas Neue', 'sans-serif']
       },
       backgroundImage: {
-        auth: "url('./src/assets/auth.png')",
-        landing: "url('./src/assets/landing.png')",
-        board: "url('./src/assets/board.png')",
-        board2: "url('./src/assets/board2.png')"
+        auth: "url('./src/assets/auth.webp')",
+        landing: "url('./src/assets/landing.webp')",
+        board: "url('./src/assets/board.webp')",
+        board2: "url('./src/assets/board2.webp')"
       },
       colors: {
         mainBlue: '#324FE5',
@@ -32,7 +32,16 @@ export default {
         placeholderGray: '#BABABA',
         sky: '#daefff',
         bgGray: '#E7E7E7',
-        yel: '#FFB800'
+        yel: '#FFB800',
+        'yel-100': 'rgba(255, 184, 0, 0.1)',
+        'yel-200': 'rgba(255, 184, 0, 0.2)',
+        'yel-300': 'rgba(255, 184, 0, 0.3)',
+        'yel-400': 'rgba(255, 184, 0, 0.4)',
+        'yel-500': 'rgba(255, 184, 0, 0.5)',
+        'yel-600': 'rgba(255, 184, 0, 0.6)',
+        'yel-700': 'rgba(255, 184, 0, 0.7)',
+        'yel-800': 'rgba(255, 184, 0, 0.8)',
+        'yel-900': 'rgba(255, 184, 0, 0.9)'
       }
     }
   },
