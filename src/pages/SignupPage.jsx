@@ -99,7 +99,7 @@ function SignupPage() {
             )}
             <button
               onClick={handleSignupSubmit}
-              className={`text-white' h-12 w-[20.625rem] rounded-lg ${!isPasswordCheckValid ? 'bg-placeholderGray' : 'bg-mainBlue'} text-white`}
+              className={`text-white' h-12 w-[20.625rem] rounded-lg ${!isPasswordCheckValid ? 'bg-placeholderGray' : 'bg-yel'} text-white`}
               disabled={!isPasswordCheckValid}
             >
               회원가입

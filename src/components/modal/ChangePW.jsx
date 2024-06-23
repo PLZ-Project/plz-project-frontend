@@ -141,7 +141,7 @@ function ChangePW({ toggleModal }) {
           <div className="mt-20 flex flex-row justify-center gap-4">
             <button
               className={`h-10 w-20 rounded-md  text-white ${
-                isPasswordMatch ? 'bg-mainBlue' : 'bg-placeholderGray'
+                isPasswordMatch ? 'bg-yel' : 'bg-placeholderGray'
               }`}
               aria-label="change password button"
               disabled={!isPasswordMatch}

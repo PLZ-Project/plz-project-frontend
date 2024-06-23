@@ -87,14 +87,14 @@ function MyInfo({ userInfo }) {
                 className="ml-4 w-[25rem] rounded-md border bg-bgGray text-black"
               />
               <button
-                className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
+                className="ml-4 h-7 w-14 rounded-md bg-yel text-white"
                 onClick={handleSaveNickname}
               >
                 저장
               </button>
               <button
                 onClick={handleCancelEditNickname}
-                className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
+                className="ml-4 h-7 w-14 rounded-md bg-yel text-white"
               >
                 취소
               </button>
@@ -107,7 +107,7 @@ function MyInfo({ userInfo }) {
                 className="ml-4 w-[25rem] rounded-md border bg-placeholderGray text-black"
               />
               <button
-                className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
+                className="ml-4 h-7 w-14 rounded-md bg-yel text-white"
                 onClick={() => setIsEditNickname(true)}
               >
                 변경
@@ -118,10 +118,7 @@ function MyInfo({ userInfo }) {
         <div id="password" className="w-40rem flex h-40 flex-row items-center">
           <p className="w-16">비밀번호</p>
           {/* 비밀번호 변경 버튼 나머지 부분은 모달로 처리 */}
-          <button
-            onClick={clickModalOpen}
-            className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
-          >
+          <button onClick={clickModalOpen} className="ml-4 h-7 w-14 rounded-md bg-yel text-white">
             변경
           </button>
         </div>

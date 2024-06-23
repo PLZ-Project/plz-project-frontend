@@ -66,14 +66,14 @@ function InfoDropdown({ infoToggle }) {
       <button
         onClick={goToMyPage}
         aria-label="userinfo button"
-        className="m-1 h-8 hover:bg-mainBlue-300"
+        className="m-1 h-8 hover:bg-yel-300"
       >
         내 정보
       </button>
       <button
         onClick={handleLogout}
         aria-label="logout button"
-        className="m-1 h-8 hover:bg-mainBlue-300"
+        className="m-1 h-8 hover:bg-yel-300"
       >
         로그아웃
       </button>

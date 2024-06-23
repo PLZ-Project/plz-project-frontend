@@ -189,7 +189,7 @@ function PostSpecSection({ id }) {
             </div>
             <button
               id="comment submit"
-              className="h-8 w-24 bg-mainBlue text-white"
+              className="h-8 w-24 bg-yel text-white"
               aria-label="submit comment button"
               onClick={handleCommentSubmit}
             >
@@ -233,7 +233,7 @@ function PostSpecSection({ id }) {
                             handleCommentEditMode();
                           }}
                           aria-label="comment modify button"
-                          className="size-10 rounded-sm bg-mainBlue text-white"
+                          className="size-10 rounded-sm bg-yel text-white"
                         >
                           저장
                         </button>

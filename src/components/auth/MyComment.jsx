@@ -42,7 +42,7 @@ function MyComment() {
           <div className="flex flex-row gap-2">
             {isEditMode ? (
               <button
-                className="h-7 w-14 rounded-md bg-mainBlue text-white"
+                className="h-7 w-14 rounded-md bg-yel text-white"
                 onClick={handleSaveClick}
                 aria-label="save button"
               >
@@ -50,7 +50,7 @@ function MyComment() {
               </button>
             ) : (
               <button
-                className="h-7 w-14 rounded-md bg-mainBlue text-white"
+                className="h-7 w-14 rounded-md bg-yel text-white"
                 onClick={handleEditMode}
                 aria-label="modify button"
               >
