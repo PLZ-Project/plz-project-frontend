@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { VscLinkExternal } from 'react-icons/vsc';
 import { connectSocket } from '../../../utils/socket';
-import { apiInstance, apiInstanceWithoutToken } from '../../api/apiInstance';
+import { apiInstanceWithoutToken } from '../../api/apiInstance';
 
 function AlertDropdown({ toggleDropdown }) {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ function AlertDropdown({ toggleDropdown }) {
       ref={dropdownRef}
       className="absolute right-2 top-20 z-[100] flex h-[30rem] w-80 flex-col bg-black bg-opacity-50"
     >
-      <div id="alertList" className="h-60 overflow-hidden text-white">
+      <div id="alertList" className="scrollbar-hide h-auto flex-col overflow-y-auto">
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error loading notifications.</p>}
         {!isLoading &&
@@ -85,10 +85,15 @@ function AlertDropdown({ toggleDropdown }) {
           notifications.map((notification, index) => (
             <div
               key={index}
-              onClick={() => handleURLClick(notification.articleId)}
-              className="notification-item"
+              className="notification-item mx-2 mt-2 flex h-10 flex-row items-center justify-between rounded-sm bg-white px-2 text-black shadow-sm shadow-gray-400"
             >
               {writeContent(notification)}
+              <button
+                onClick={() => handleURLClick(notification.articleId)}
+                aria-label="link button"
+              >
+                <VscLinkExternal />
+              </button>
             </div>
           ))}
       </div>

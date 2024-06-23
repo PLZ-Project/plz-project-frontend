@@ -14,14 +14,14 @@ function InfoDropdown({ infoToggle }) {
     navigate('/');
   };
 
-  const goToMyPage = () => {
+  const goToMyPage = (e) => {
     navigate('/userinfo');
-    infoToggle();
+    infoToggle(e);
   };
   useEffect(() => {
     const clickOutside = (e) => {
       if (infoDropdownRef.current && !infoDropdownRef.current.contains(e.target)) {
-        infoToggle();
+        infoToggle(e);
       }
     };
 
