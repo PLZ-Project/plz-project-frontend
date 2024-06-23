@@ -151,7 +151,7 @@ function PostSpecSection({ id }) {
       </div>
       <div
         id="contents"
-        className="min-h-96 rounded-t-lg bg-white px-4"
+        className="min-h-96 rounded-t-lg bg-white px-4 pt-4"
         dangerouslySetInnerHTML={{ __html: contents }}
       />
       <div id="likeBtn" className="mb-4 flex h-12 flex-row justify-center rounded-b-lg bg-white">

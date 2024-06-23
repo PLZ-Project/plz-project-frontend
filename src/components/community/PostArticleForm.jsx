@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Delta } from 'quill/core';
-import Button from '../common/Button';
 import { apiInstance } from '../../api/apiInstance';
 
 function PostArticleForm({ isEditing, postData }) {
@@ -132,7 +131,7 @@ function PostArticleForm({ isEditing, postData }) {
         </div>
       </div>
       <div className="h-[30rem] w-[52rem] bg-white">
-        <div ref={quillRef}></div>
+        <div id="ql-editor" ref={quillRef}></div>
       </div>
       <div className="mt-11 flex h-[4.5rem] flex-row justify-between">
         <button
@@ -149,12 +148,6 @@ function PostArticleForm({ isEditing, postData }) {
         >
           등록
         </button>
-        {/* <Button width={10.25} height={2} onClick={handleCancel}>
-          취소
-        </Button>
-        <Button width={10.25} height={2} type="filled" onClick={handleSubmit}>
-          등록
-        </Button> */}
       </div>
     </div>
   );

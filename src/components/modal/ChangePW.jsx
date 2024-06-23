@@ -1,28 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import debounce from '../../../utils/debounce';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiInstance } from '../../api/apiInstance';
 // import { apiInstance } from '../../api/api';
 
 function ChangePW({ toggleModal }) {
-  // 비밀번호 변경 모달
-  // 총 3개의 input이 존재
-  // 이 중에서 첫 번째 input은 현재 비밀번호를 입력하는 input
-  // 여기서 입력한 비밀번호가 현재 비밀번호와 일치하는지 확인하는 API 요청을 보내야 함
-  // 일치하면 다음 두 개의 input이 활성화되고, 일치하지 않으면 에러 메시지를 띄워야 함
-
-  // 두 번째 input은 새로운 비밀번호를 입력하는 input
-  // 세 번째 input은 새로운 비밀번호를 다시 입력하는 input
-  // 이 두 input은 서로 일치하는지 확인해야 함
-  // 일치하지 않으면 에러 메시지를 띄워야 함
-  // 일치하면 변경 버튼이 활성화되어야 함
-
-  // 변경 버튼을 누르면 새로운 비밀번호로 변경하는 API 요청을 보내야 함
-  // const setIsModalOpen = useSetAtom(modalAtom);
+  const navigate = useNavigate();
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordAgain, setNewPasswordAgain] = useState('');
-  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(false);
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   const handleModalClose = () => {
     toggleModal();
@@ -42,32 +28,6 @@ function ChangePW({ toggleModal }) {
     };
   }, [modalRef, toggleModal]);
 
-  // 유효성 검증 로직
-  // const checkPassword = async (value) => {
-  //   try {
-  //     const response = await apiInstance.post('/check-password', {
-  //       password: value
-  //     });
-  //     const data = await response.json();
-  //     return data.success;
-  //   } catch (error) {
-  //     console.error('Error checking password:', error);
-  //   }
-
-  //   return false;
-  // };
-  // 현재 비밀번호가 일치하는지 확인하는 API 요청
-  // const debouncePasswordChange = async (value) => {
-  //   const isValid = await checkPassword(value);
-  //   setIsCurrentPasswordValid(isValid);
-  // };
-
-  // const handleCheckCurrentPassword = useMemo(
-  //   () => debounce((value) => debouncePasswordChange(value), 1000),
-  //   []
-  // );
-
-  // handler
   const handleChangeCurrentPassword = (e) => {
     setCurrentPassword(e.target.value);
   };
@@ -86,6 +46,7 @@ function ChangePW({ toggleModal }) {
         password: newPassword
       });
       alert('비밀번호가 변경되었습니다.');
+      navigate('/main');
     } catch (error) {
       console.error('Error changing password:', error);
     }
