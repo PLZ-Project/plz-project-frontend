@@ -1,36 +1,61 @@
-import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import { useEffect } from 'react';
+import AuthLogo from '../../src/assets/authlogo.svg?react';
+import DiscordLogo from '../../src/assets/discord.svg?react';
+import GoogleLogo from '../../src/assets/google.svg?react';
+import { apiInstanceWithoutToken } from '../api/apiInstance';
+import { isLoginAtom } from '../atoms/isLoginAtom';
 import DynamicInput from '../components/common/DynamicInput';
 import useInputValidator from '../hooks/useInputValidator';
-import { isLoginAtom } from '../atoms/isLoginAtom';
-import GoogleLogo from '../../src/assets/google.svg?react';
-import DiscordLogo from '../../src/assets/discord.svg?react';
-import AuthLogo from '../../src/assets/authlogo.svg?react';
-import { OAuthInstance, apiInstanceWithoutToken } from '../api/apiInstance';
+import { connectSocket } from '../../utils/socket';
 
 function SigninPage() {
   const navigate = useNavigate();
   const [email, , handleEmailChange] = useInputValidator('', 'email');
   const [password, isPasswordValid, handlePasswordChange] = useInputValidator('', 'password');
 
+  const setIsLogin = useSetAtom(isLoginAtom);
+
   useEffect(() => {
     const fetchBoardList = async () => {
       try {
         await apiInstanceWithoutToken.get('/board/list').then((response) => {
-          console.log('게시판 리스트', response.data);
+          console.log(response.data);
           localStorage.setItem('boardList', JSON.stringify(response.data));
         });
       } catch (error) {
-        console.error('Error fetching board list:', error);
+        console.error(error);
       }
     };
     fetchBoardList();
   }, []);
 
-  const setIsLogin = useSetAtom(isLoginAtom);
+  useEffect(() => {
+    const login = async () => {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const responseDTO = urlParams.get('responseDTO');
+
+      if (responseDTO) {
+        const { accessToken, refreshToken, userInfo } = JSON.parse(responseDTO);
+
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+        const socket = connectSocket();
+        await socket.emit('join_room', userInfo.id);
+
+        setIsLogin(true);
+        navigate('/main');
+      }
+    };
+
+    login();
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -39,17 +64,22 @@ function SigninPage() {
           email,
           password
         })
-        .then((response) => {
+        .then(async (response) => {
           const { accessToken, refreshToken, userInfo } = response.data;
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+          const socket = connectSocket();
+          await socket.emit('join_room', userInfo.id);
+
           setIsLogin(true);
-          navigate('/');
+          navigate('/main');
         });
       setIsLogin(true);
-      navigate('/');
+      navigate('/main');
     } catch (error) {
+      alert('이메일 또는 비밀번호가 일치하지 않습니다.');
       console.error(error);
     }
   };
@@ -57,69 +87,56 @@ function SigninPage() {
     navigate('/signup');
   };
 
-  // const handleGoogleLoginResponse = (response) => {
-  //   if (response.isSuccess === true) {
-  //     // 토큰 저장
-  //     localStorage.setItem('accessToken', response.accessToken);
-  //     localStorage.setItem('refreshToken', response.refreshToken);
-  //     localStorage.setItem('userInfo', JSON.stringify(response.userInfo));
-  //     // 사용자 정보 활용
-  //     // const { id, email, nickname, role } = response.userInfo;
-  //     // 사용자 프로필 페이지 등 구현
-  //     setIsLogin(true);
-  //     navigate('/');
-  //   } else {
-  //     // 로그인 실패 처리
-  //     console.error('Google login failed:', response);
-  //   }
-  // };
+  const handleGoMain = () => {
+    navigate('/main');
+  };
 
-  // const handleGoogleLogin = async () => {
-  //   window.location.href = 'https://plz-project.site/api/auth/google';
-  //   // 백엔드 서버로부터 응답을 받으면 handleGoogleLoginResponse 함수를 호출
-  //   const response = await fetch('https://plz-project.site/api/auth/google/callback')
-  //     .then((res) => res.json())
-  //     .catch((err) => console.error('Error:', err));
-  //   handleGoogleLoginResponse(response);
-  const handleLoginSuccess = async (credenitalResponse) => {
-    console.log(credenitalResponse);
+  const handleDiscordLogin = async () => {
     try {
-      const url = '/o/oauth2/v2/auth';
-
-      const res = await OAuthInstance.get(url, {
-        params: {
-          client_id: '523405884505-gg96ji9js5qb6tkuq906ckhcnqre737e.apps.googleusercontent.com',
-          redirect_uri: 'https://plz-project.site/api/auth/google/callback',
-          response_type: 'code',
-          scope: 'email profile'
-        }
-      });
-      console.log('백엔드 응답:', res.data);
-      // localStorage.setItem('accessToken', res.data.accessToken);
-      // localStorage.setItem('refreshToken', res.data.refreshToken);
-      // localStorage.setItem('userInfo', JSON.stringify(res.data.user));
+      window.location.href = 'https://plz-project.site/api/auth/discord';
     } catch (error) {
-      console.error('로그인 에러:', error);
+      console.error(error);
+    }
+  };
+
+  const handleLoginSuccess = async (credentialResponse) => {
+    try {
+      await apiInstanceWithoutToken
+        .post('/auth/google/callback', {
+          tokenId: credentialResponse.credential
+        })
+        .then(async (response) => {
+          const { accessToken, refreshToken, userInfo } = response.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+          const socket = connectSocket();
+          await socket.emit('join_room', userInfo.id);
+
+          setIsLogin(true);
+          navigate('/main');
+        });
+      setIsLogin(true);
+      navigate('/main');
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const handleLoginFailure = (error) => {
-    console.error('로그인 실패:', error);
+    console.error(error);
   };
 
-  const handleGoMain = () => {
-    navigate('/');
-  };
   return (
-    <div
-      className=" relative flex h-screen items-center justify-center object-cover"
-      style={{ backgroundImage: "url('./src/assets/auth.webp" }}
-    >
+    <div className="relative flex h-screen items-center justify-center bg-auth bg-cover">
       <div className="absolute left-0 top-0 m-6" onClick={handleGoMain}>
-        <AuthLogo />
+        <AuthLogo className="size-20" />
       </div>
-      <div className="flex w-[29rem] flex-col items-center">
-        <h1 className="font-semiboldbold mb-10 text-4xl text-white text-opacity-85">로그인</h1>
+      <div className="mt-16 flex w-[29rem] flex-col items-center">
+        <h1 className="mb-6 font-BlackHanSans text-5xl text-[2.5rem]  font-thin tracking-wide text-white text-opacity-85">
+          로그인
+        </h1>
         <div>
           <form className="flex flex-col gap-2">
             <DynamicInput
@@ -143,30 +160,32 @@ function SigninPage() {
             )}
             <button
               onClick={handleLogin}
-              className="text-white' h-12 w-[20.625rem] rounded-lg bg-mainBlue text-white"
+              className="text-white' mt-2 h-[3.2rem] w-[20.625rem] rounded-lg bg-blue-900 font-NotoSansKR text-[15px] tracking-wide text-white"
             >
               로그인
             </button>
           </form>
-          <div className="mt-4 flex flex-row justify-center gap-6">
+          <div className="mt-6 flex flex-row justify-center gap-6">
             <button aria-label="구글 로그인">
               <GoogleOAuthProvider clientId="523405884505-gg96ji9js5qb6tkuq906ckhcnqre737e.apps.googleusercontent.com">
                 <GoogleLogin
                   onSuccess={handleLoginSuccess}
                   onError={handleLoginFailure}
-                  text="구글로 로그인"
-                >
-                  <GoogleLogo />
-                </GoogleLogin>
+                  type="icon"
+                  shape="circle"
+                />
               </GoogleOAuthProvider>
             </button>
             <button aria-label="디스코드 로그인">
-              <DiscordLogo />
+              <DiscordLogo onClick={handleDiscordLogin} />
             </button>
           </div>
-          <div className="mt-4 flex items-center justify-center">
-            <p className="mr-2 text-white">아직 회원이 아니시라면?</p>
-            <button onClick={handleSignupButtonClick} className="font-semibold text-yel">
+          <div className="mt-5 flex items-center justify-center">
+            <p className="mr-2 font-NotoSansKR text-[0.9rem] text-white">아직 회원이 아니시라면?</p>
+            <button
+              onClick={handleSignupButtonClick}
+              className="-mt-0.02 font-NotoSansKR text-[0.9rem] font-semibold text-yel"
+            >
               회원가입
             </button>
           </div>

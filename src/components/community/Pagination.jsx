@@ -16,7 +16,7 @@ import { articlesAtom } from '../../atoms/articlesAtom';
 function Pagination({ postDatas }) {
   // const [postDatas, setPostDatas] = useAtom(articlesAtom);
 
-  const postCount = postDatas.articles.count;
+  const postCount = postDatas.articles.rows.length || 0;
   const postPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const pageCount = Math.ceil(postCount / postPerPage);
@@ -53,12 +53,15 @@ function Pagination({ postDatas }) {
       </div>
       {/* 페이지네이션 */}
       <div className="mt-4 flex items-center justify-center space-x-2">
-        <button
-          onClick={prevPage}
-          className="rounded-md border bg-gray-200 px-4 py-2 hover:bg-gray-300"
-        >
-          이전
-        </button>
+        {postCount > 9 && (
+          <button
+            onClick={prevPage}
+            className="rounded-md border bg-gray-200 px-4 py-2 hover:bg-gray-300"
+          >
+            이전
+          </button>
+        )}
+
         {Array.from({ length: pageCount }, (_, index) => (
           <button
             key={index + 1}
@@ -68,12 +71,14 @@ function Pagination({ postDatas }) {
             {index + 1}
           </button>
         ))}
-        <button
-          onClick={nextPage}
-          className="rounded-md border bg-gray-200 px-4 py-2 hover:bg-gray-300"
-        >
-          다음
-        </button>
+        {postCount > 9 && (
+          <button
+            onClick={nextPage}
+            className="rounded-md border bg-gray-200 px-4 py-2 hover:bg-gray-300"
+          >
+            다음
+          </button>
+        )}
       </div>
     </div>
   );

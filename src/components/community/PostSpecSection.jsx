@@ -124,7 +124,6 @@ function PostSpecSection({ id }) {
           className="flex h-[36px] items-center justify-between rounded-t-lg bg-white pl-2"
         >
           <p className="pl-2 text-lg">{postData.title}</p>
-
           {postData.user.id === userId && (
             <div className="flex flex-row gap-0">
               <button onClick={handleEditClick} aria-label="edit button" className="pr-2">
@@ -175,7 +174,7 @@ function PostSpecSection({ id }) {
         </div>
         <div
           id="comment input"
-          className="flex flex-col items-center justify-center rounded-t-lg border-b border-b-placeholderGray bg-white py-6"
+          className="flex flex-col items-center justify-center rounded-lg border-b border-b-placeholderGray bg-white py-6"
         >
           <textarea
             id="comment input"
@@ -200,12 +199,12 @@ function PostSpecSection({ id }) {
         </div>
         <div
           id="comment list"
-          className="flex h-auto w-[52rem] flex-col items-center justify-center rounded-b-xl bg-white p-4"
+          className="mt-4 flex h-auto w-[52rem] flex-col items-center justify-center gap-4 rounded-xl bg-white p-4"
         >
           {commentData.comments.rows.map((comment) => (
             <div
               key={comment.id}
-              className="flex w-[52rem] flex-row justify-between border-b border-b-placeholderGray bg-white px-4"
+              className="flex w-[50rem] flex-row justify-between rounded-md bg-white px-4 shadow-md shadow-gray-400"
             >
               <div className="flex w-[40rem] flex-col">
                 <div className="font-bold">{userNickName(comment.User.nickname)}</div>
