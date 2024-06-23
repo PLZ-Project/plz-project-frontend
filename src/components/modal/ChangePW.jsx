@@ -43,34 +43,33 @@ function ChangePW({ toggleModal }) {
   }, [modalRef, toggleModal]);
 
   // 유효성 검증 로직
-  const checkPassword = async (value) => {
-    try {
-      const response = await apiInstance.post('/check-password', {
-        password: value
-      });
-      const data = await response.json();
-      return data.success;
-    } catch (error) {
-      console.error('Error checking password:', error);
-    }
+  // const checkPassword = async (value) => {
+  //   try {
+  //     const response = await apiInstance.post('/check-password', {
+  //       password: value
+  //     });
+  //     const data = await response.json();
+  //     return data.success;
+  //   } catch (error) {
+  //     console.error('Error checking password:', error);
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
   // 현재 비밀번호가 일치하는지 확인하는 API 요청
-  const debouncePasswordChange = async (value) => {
-    const isValid = await checkPassword(value);
-    setIsCurrentPasswordValid(isValid);
-  };
+  // const debouncePasswordChange = async (value) => {
+  //   const isValid = await checkPassword(value);
+  //   setIsCurrentPasswordValid(isValid);
+  // };
 
-  const handleCheckCurrentPassword = useMemo(
-    () => debounce((value) => debouncePasswordChange(value), 1000),
-    []
-  );
+  // const handleCheckCurrentPassword = useMemo(
+  //   () => debounce((value) => debouncePasswordChange(value), 1000),
+  //   []
+  // );
 
   // handler
   const handleChangeCurrentPassword = (e) => {
     setCurrentPassword(e.target.value);
-    handleCheckCurrentPassword(e.target.value);
   };
 
   const handleNewPassword = (e) => {
@@ -79,6 +78,17 @@ function ChangePW({ toggleModal }) {
 
   const handleNewPasswordAgain = (e) => {
     setNewPasswordAgain(e.target.value);
+  };
+
+  const handlePasswordChange = async () => {
+    try {
+      await apiInstance.put('/user/updatePw', {
+        password: newPassword
+      });
+      alert('비밀번호가 변경되었습니다.');
+    } catch (error) {
+      console.error('Error changing password:', error);
+    }
   };
 
   useEffect(() => {
@@ -96,14 +106,11 @@ function ChangePW({ toggleModal }) {
             <p className="mr-4 w-36 text-right text-lg">현재 비밀번호</p>
             <input
               type="password"
-              className={`h-10 w-60 border-2 ${isCurrentPasswordValid ? 'border-mainBlue-600' : 'border-red-500'}`}
+              className="h-10 w-60 border-2 "
               placeholder="현재 비밀번호를 입력하세요."
               value={currentPassword}
               onChange={handleChangeCurrentPassword}
             />
-            {isCurrentPasswordValid && (
-              <p className="ml-2 text-sm text-red-500">현재 비밀번호가 일치하지 않습니다.</p>
-            )}
           </div>
           <div
             id="new-password"
@@ -112,8 +119,7 @@ function ChangePW({ toggleModal }) {
             <p className="mr-4 w-36 text-right text-lg">새로운 비밀번호</p>
             <input
               type="password"
-              className={`h-10 w-60 ${isCurrentPasswordValid ? '' : 'bg-bgGray'}`}
-              disabled={!isCurrentPasswordValid}
+              className="h-10 w-60 border-2"
               value={newPassword}
               onChange={handleNewPassword}
               placeholder="새로운 비밀번호를 입력하세요."
@@ -126,8 +132,7 @@ function ChangePW({ toggleModal }) {
             <p className="mr-4 w-36 text-right text-lg">비밀번호 확인</p>
             <input
               type="password"
-              className={`h-10 w-60 ${isCurrentPasswordValid ? '' : 'bg-bgGray'}`}
-              disabled={!isCurrentPasswordValid}
+              className="h-10 w-60 border-2"
               value={newPasswordAgain}
               onChange={handleNewPasswordAgain}
               placeholder="비밀번호를 다시 입력하세요."
@@ -140,6 +145,7 @@ function ChangePW({ toggleModal }) {
               }`}
               aria-label="change password button"
               disabled={!isPasswordMatch}
+              onClick={handlePasswordChange}
             >
               변경
             </button>

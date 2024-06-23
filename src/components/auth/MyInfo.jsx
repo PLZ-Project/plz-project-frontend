@@ -1,42 +1,22 @@
 import { useState, useEffect } from 'react';
 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { apiInstance } from '../../api/apiInstance';
 import ChangePW from '../modal/ChangePW';
 
 function MyInfo({ userInfo }) {
-  const { email } = userInfo;
+  const navigate = useNavigate();
+  const { email, id } = userInfo;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [isEditNickname, setIsEditNickname] = useState(false);
-  // const [isEditPassword, setIsEditPassword] = useState(false);
+
   const [newNickname, setNewNickname] = useState(nickname);
-  const [isDuplicateNickname, setIsDuplicateNickname] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  // 닉네임 중복 검사 api 없음.
-  useEffect(() => {
-    const checkDuplicateNickname = async () => {
-      try {
-        const response = await apiInstance.post('/check-duplicate-nickname', {
-          nickname: newNickname
-        });
-        const data = await response.json();
-        setIsDuplicateNickname(data.isDuplicate);
-      } catch (error) {
-        console.error('Error checking duplicate nickname:', error);
-      }
-    };
-
-    if (isEditNickname) {
-      const timer = setTimeout(checkDuplicateNickname, 3000); // 3초 후에 중복 검사 API 호출
-      return () => clearTimeout(timer);
-    }
-
-    return undefined;
-  }, [isEditNickname, newNickname]);
 
   const clickModalOpen = () => {
     setIsModalOpen(!isModalOpen);
@@ -49,28 +29,35 @@ function MyInfo({ userInfo }) {
     setNewNickname(userInfo.nickname);
   };
 
+  // // 유저 정보 refetch
+  // const refetchUserInfo = () => {
+  //   try {
+  //     const response = apiInstance.get(`/user/${id}`);
+  //     const { data } = response; // 실제 데이터 추출
+  //     console.log(data); // 데이터 확인
+
+  //     // localStorage.setItem('userInfo', JSON.stringify(data));
+  //   } catch (error) {
+  //     console.error('Error refetching user info:', error);
+  //   }
+  // };
+
   const handleSaveNickname = async () => {
     try {
-      const response = await axios.post(
-        '/api/user/updateNickname',
-        {
+      await apiInstance
+        .put('/user/updateNickname', {
           nickname: newNickname
-        },
-        {
-          headers: {
-            access_token: localStorage.getItem('accessToken'),
-            refresh_token: localStorage.getItem('refreshToken')
-          }
-        }
-      );
-      const data = await response.json();
-      if (data.success) {
-        setNickname(newNickname);
-        localStorage.setItem('nickname', newNickname);
-        setIsEditNickname(false);
-      } else {
-        alert('닉네임 변경에 실패했습니다.');
-      }
+        })
+        .then(() => {
+          setNickname(newNickname);
+          localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, nickname: newNickname }));
+        });
+
+      // 로컬 스토리지에 userInfo 업데이트
+      // localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, nickname: newNickname }));
+      // localStorage.setItem('nickname', newNickname);
+      setIsEditNickname(false);
+      navigate('/userinfo');
     } catch (error) {
       console.error('Error updating nickname:', error);
     }
@@ -99,19 +86,12 @@ function MyInfo({ userInfo }) {
                 onChange={(e) => setNewNickname(e.target.value)}
                 className="ml-4 w-[25rem] rounded-md border bg-bgGray text-black"
               />
-              {isDuplicateNickname ? (
-                <p className="ml-4 text-red-500">닉네임이 중복됩니다.</p>
-              ) : (
-                <button
-                  className={`ml-4 h-7 w-14 rounded-md text-white ${
-                    isDuplicateNickname ? 'bg-mainBlue' : 'bg-placeholderGray'
-                  }`}
-                  onClick={handleSaveNickname}
-                  disabled={isDuplicateNickname}
-                >
-                  저장
-                </button>
-              )}
+              <button
+                className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
+                onClick={handleSaveNickname}
+              >
+                저장
+              </button>
               <button
                 onClick={handleCancelEditNickname}
                 className="ml-4 h-7 w-14 rounded-md bg-mainBlue text-white"
