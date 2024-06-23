@@ -48,7 +48,12 @@ const settingArgs = {
       }
     ],
     'no-shadow': 0,
+    'operator-linebreak': 0,
+    'react/no-danger': 0,
     'jsx-a11y/img-redundant-alt': 0,
+    'react/no-array-index-key': 0,
+    'implicit-arrow-linebreak': 0,
+    'react/jsx-curly-newline': 0,
     'import/no-unresolved': 0,
     'no-useless-return': 0,
     'react/prop-types': 0,
