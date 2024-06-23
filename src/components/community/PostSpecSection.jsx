@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { GoPencil } from 'react-icons/go';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
-import { FaSave, FaTimesCircle } from 'react-icons/fa';
 import PostDelete from '../modal/PostDelete';
 import { apiInstance } from '../../api/apiInstance';
 import useCommentActions from '../../Rmutate/commentMutate';
@@ -176,7 +175,7 @@ function PostSpecSection({ id }) {
         </div>
         <div
           id="comment input"
-          className="flex flex-col items-center justify-center rounded-lg bg-white py-6"
+          className="flex flex-col items-center justify-center rounded-t-lg border-b border-b-placeholderGray bg-white py-6"
         >
           <textarea
             id="comment input"
@@ -199,11 +198,14 @@ function PostSpecSection({ id }) {
             </button>
           </div>
         </div>
-        <div id="comment list" className="mb-8 flex w-[52rem] flex-col justify-center">
+        <div
+          id="comment list"
+          className="flex h-auto w-[52rem] flex-col items-center justify-center rounded-b-xl bg-white p-4"
+        >
           {commentData.comments.rows.map((comment) => (
             <div
               key={comment.id}
-              className="flex w-[48rem] flex-row justify-between border border-black"
+              className="flex w-[52rem] flex-row justify-between border-b border-b-placeholderGray bg-white px-4"
             >
               <div className="flex w-[40rem] flex-col">
                 <div className="font-bold">{userNickName(comment.User.nickname)}</div>
@@ -221,7 +223,7 @@ function PostSpecSection({ id }) {
                   {convertDate(comment.createdAt)}
                 </div>
               </div>
-              <div className="flex w-12 flex-row">
+              <div className="mr-4 flex w-24 flex-row items-center gap-4">
                 {userId === comment.User.id && (
                   <>
                     {isCommentEditing ? (
@@ -232,23 +234,33 @@ function PostSpecSection({ id }) {
                             handleCommentEditMode();
                           }}
                           aria-label="comment modify button"
+                          className="size-10 rounded-sm bg-mainBlue text-white"
                         >
-                          <FaSave size={25} />
+                          저장
                         </button>
-                        <button onClick={handleCommentEditMode} aria-label="edit comment button">
-                          <FaTimesCircle size={25} />
+                        <button
+                          onClick={handleCommentEditMode}
+                          aria-label="edit comment button"
+                          className="size-10 rounded-sm bg-placeholderGray text-white"
+                        >
+                          취소
                         </button>
                       </>
                     ) : (
                       <>
-                        <button onClick={handleCommentEditMode} aria-label="edit comment button">
-                          <GoPencil size={25} />
+                        <button
+                          onClick={handleCommentEditMode}
+                          aria-label="edit comment button"
+                          className="size-10 rounded-sm bg-yel text-white"
+                        >
+                          수정
                         </button>
                         <button
                           onClick={() => commentDelete({ commentId: comment.id })}
                           aria-label="delete comment button"
+                          className="size-10 rounded-sm bg-red-500 text-white"
                         >
-                          <RiDeleteBin2Line size={25} />
+                          삭제
                         </button>
                       </>
                     )}
