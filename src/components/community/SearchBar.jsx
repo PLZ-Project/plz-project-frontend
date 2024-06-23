@@ -41,11 +41,11 @@ function SearchBar() {
   return (
     <div className="mb-4 flex h-[4.5rem] w-[52rem] flex-row items-center justify-between rounded-lg bg-white">
       <div className="ml-4 flex flex-row gap-2">
-        <button aria-label="whole article">
-          <button className="flex flex-row items-center gap-2" onClick={onClickWhole}>
+        <button aria-label="whole article" onClick={onClickWhole}>
+          <span className="flex flex-row items-center gap-2">
             <FaCircle className="text-gray-500" />
             <p className="text-gray-500">전체</p>
-          </button>
+          </span>
         </button>
       </div>
       <div className="mr-4 flex flex-row gap-4">
