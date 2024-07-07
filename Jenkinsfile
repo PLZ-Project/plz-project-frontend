@@ -24,13 +24,13 @@ pipeline {
                         echo "Checking out main branch"
                         checkout([$class: 'GitSCM', branches: [[name: "*/main"]],
                             doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [],
-                            userRemoteConfigs: [[url: 'https://github.com/UVC-Midterm-Project/uvc-midterm-project-frontend.git',
+                            userRemoteConfigs: [[url: 'https://github.com/PLZ-Project/plz-project-frontend.git',
                             credentialsId: GITHUB_CREDENTIALS]]])
                     } else {
                         echo "Checking out dev branch"
                         checkout([$class: 'GitSCM', branches: [[name: "*/dev"]],
                             doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [],
-                            userRemoteConfigs: [[url: 'https://github.com/UVC-Midterm-Project/uvc-midterm-project-frontend.git',
+                            userRemoteConfigs: [[url: 'https://github.com/PLZ-Project/plz-project-frontend.git',
                             credentialsId: GITHUB_CREDENTIALS]]])
                     }
 
